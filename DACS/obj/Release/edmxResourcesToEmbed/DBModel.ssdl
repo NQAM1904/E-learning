@@ -1,0 +1,441 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DACSModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="COSO">
+    <Key>
+      <PropertyRef Name="IDCOSO" />
+    </Key>
+    <Property Name="IDCOSO" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TENCS" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="CTDT">
+    <Key>
+      <PropertyRef Name="IDCTDT" />
+    </Key>
+    <Property Name="IDCTDT" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IDNGANH" Type="int" Nullable="false" />
+  </EntityType>
+  <!--Errors Found During Generation:
+warning 6002: The table/view 'DACS.dbo.DIEM' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+  <EntityType Name="DIEM">
+    <Key>
+      <PropertyRef Name="IDSTUDENT" />
+      <PropertyRef Name="IDTKB" />
+    </Key>
+    <Property Name="IDSTUDENT" Type="int" Nullable="false" />
+    <Property Name="DIEMTB" Type="float" />
+    <Property Name="STCDAT" Type="int" />
+    <Property Name="IDTKB" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="EVENTS">
+    <Key>
+      <PropertyRef Name="IDEVENTS" />
+    </Key>
+    <Property Name="IDEVENTS" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TENEVENT" Type="nvarchar" MaxLength="255" />
+    <Property Name="THOIGIANEV" Type="datetime" />
+    <Property Name="IDUSER" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="HOCKY">
+    <Key>
+      <PropertyRef Name="IDHOCKY" />
+    </Key>
+    <Property Name="IDHOCKY" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TENHOCKY" Type="nvarchar" MaxLength="255" />
+    <Property Name="IDCTDT" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MONHOC">
+    <Key>
+      <PropertyRef Name="IDMONHOC" />
+    </Key>
+    <Property Name="IDMONHOC" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TENMONHOC" Type="nvarchar" MaxLength="255" />
+    <Property Name="IDMONTIENQUYET" Type="int" />
+    <Property Name="TINCHI" Type="int" />
+    <Property Name="IDHOCKY" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="NGANH">
+    <Key>
+      <PropertyRef Name="IDNGANH" />
+    </Key>
+    <Property Name="IDNGANH" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NAMENGANH" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="NIENKHOA">
+    <Key>
+      <PropertyRef Name="IDNIENKHOA" />
+    </Key>
+    <Property Name="IDNIENKHOA" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NAMENIENKHOA" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="PERMISSION">
+    <Key>
+      <PropertyRef Name="IDPERMISSION" />
+    </Key>
+    <Property Name="IDPERMISSION" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NAMEPERMISSION" Type="nvarchar" MaxLength="55" />
+    <Property Name="STATUS" Type="bit" />
+  </EntityType>
+  <EntityType Name="PHONGHOC">
+    <Key>
+      <PropertyRef Name="IDPHONGHOC" />
+    </Key>
+    <Property Name="IDPHONGHOC" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TENPHONE" Type="nvarchar" MaxLength="255" />
+    <Property Name="IDCOSO" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ROLE">
+    <Key>
+      <PropertyRef Name="IDROLE" />
+    </Key>
+    <Property Name="IDROLE" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="NAMEROLE" Type="nvarchar" MaxLength="255" />
+    <Property Name="STATUS" Type="bit" />
+  </EntityType>
+  <EntityType Name="STUDENT">
+    <Key>
+      <PropertyRef Name="IDSTUDENT" />
+    </Key>
+    <Property Name="IDSTUDENT" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IDUSER" Type="int" Nullable="false" />
+    <Property Name="MSSV" Type="int" />
+    <Property Name="IDNGANH" Type="int" Nullable="false" />
+    <Property Name="IDNIENKHOA" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
+  <EntityType Name="TKB">
+    <Key>
+      <PropertyRef Name="IDTKB" />
+    </Key>
+    <Property Name="IDTKB" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="IDSTUDENT" Type="int" Nullable="false" />
+    <Property Name="IDPHONGHOC" Type="int" Nullable="false" />
+    <Property Name="THOIGIANBATDAU" Type="datetime" />
+    <Property Name="THOIGIANKETTHUC" Type="datetime" />
+    <Property Name="IDMONHOC" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="USER">
+    <Key>
+      <PropertyRef Name="IDUSER" />
+    </Key>
+    <Property Name="IDUSER" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="USERNAME" Type="nvarchar" MaxLength="255" />
+    <Property Name="PASSWORD" Type="nvarchar" MaxLength="300" />
+    <Property Name="FULLNAME" Type="nvarchar" MaxLength="255" />
+    <Property Name="PHONE" Type="nvarchar" MaxLength="12" />
+    <Property Name="ADDRESS" Type="nvarchar" MaxLength="255" />
+    <Property Name="IDROLE" Type="int" Nullable="false" />
+    <Property Name="IDPERMISSION" Type="int" Nullable="false" />
+    <Property Name="EMAIL" Type="nvarchar" MaxLength="255" />
+    <Property Name="TOKEN" Type="nchar" MaxLength="1000" />
+  </EntityType>
+  <Association Name="FK__CTDT__IDNGANH__2E1BDC42">
+    <End Role="NGANH" Type="Self.NGANH" Multiplicity="1" />
+    <End Role="CTDT" Type="Self.CTDT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NGANH">
+        <PropertyRef Name="IDNGANH" />
+      </Principal>
+      <Dependent Role="CTDT">
+        <PropertyRef Name="IDNGANH" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__DIEM__IDSTUDENT__2B3F6F97">
+    <End Role="STUDENT" Type="Self.STUDENT" Multiplicity="1" />
+    <End Role="DIEM" Type="Self.DIEM" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="STUDENT">
+        <PropertyRef Name="IDSTUDENT" />
+      </Principal>
+      <Dependent Role="DIEM">
+        <PropertyRef Name="IDSTUDENT" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__DIEM__IDTKB__35BCFE0A">
+    <End Role="TKB" Type="Self.TKB" Multiplicity="1" />
+    <End Role="DIEM" Type="Self.DIEM" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TKB">
+        <PropertyRef Name="IDTKB" />
+      </Principal>
+      <Dependent Role="DIEM">
+        <PropertyRef Name="IDTKB" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__EVENTS__IDUSER__29572725">
+    <End Role="USER" Type="Self.USER" Multiplicity="1" />
+    <End Role="EVENTS" Type="Self.EVENTS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="USER">
+        <PropertyRef Name="IDUSER" />
+      </Principal>
+      <Dependent Role="EVENTS">
+        <PropertyRef Name="IDUSER" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__HOCKY__IDCTDT__33D4B598">
+    <End Role="CTDT" Type="Self.CTDT" Multiplicity="1" />
+    <End Role="HOCKY" Type="Self.HOCKY" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="CTDT">
+        <PropertyRef Name="IDCTDT" />
+      </Principal>
+      <Dependent Role="HOCKY">
+        <PropertyRef Name="IDCTDT" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__MONHOC__IDHOCKY__34C8D9D1">
+    <End Role="HOCKY" Type="Self.HOCKY" Multiplicity="1" />
+    <End Role="MONHOC" Type="Self.MONHOC" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="HOCKY">
+        <PropertyRef Name="IDHOCKY" />
+      </Principal>
+      <Dependent Role="MONHOC">
+        <PropertyRef Name="IDHOCKY" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__PHONGHOC__IDCOSO__31EC6D26">
+    <End Role="COSO" Type="Self.COSO" Multiplicity="1" />
+    <End Role="PHONGHOC" Type="Self.PHONGHOC" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="COSO">
+        <PropertyRef Name="IDCOSO" />
+      </Principal>
+      <Dependent Role="PHONGHOC">
+        <PropertyRef Name="IDCOSO" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__STUDENT__IDNGANH__2D27B809">
+    <End Role="NGANH" Type="Self.NGANH" Multiplicity="1" />
+    <End Role="STUDENT" Type="Self.STUDENT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NGANH">
+        <PropertyRef Name="IDNGANH" />
+      </Principal>
+      <Dependent Role="STUDENT">
+        <PropertyRef Name="IDNGANH" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__STUDENT__IDNIENK__300424B4">
+    <End Role="NIENKHOA" Type="Self.NIENKHOA" Multiplicity="1" />
+    <End Role="STUDENT" Type="Self.STUDENT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NIENKHOA">
+        <PropertyRef Name="IDNIENKHOA" />
+      </Principal>
+      <Dependent Role="STUDENT">
+        <PropertyRef Name="IDNIENKHOA" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__STUDENT__IDUSER__286302EC">
+    <End Role="USER" Type="Self.USER" Multiplicity="1" />
+    <End Role="STUDENT" Type="Self.STUDENT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="USER">
+        <PropertyRef Name="IDUSER" />
+      </Principal>
+      <Dependent Role="STUDENT">
+        <PropertyRef Name="IDUSER" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__TKB__IDMONHOC__2F10007B">
+    <End Role="MONHOC" Type="Self.MONHOC" Multiplicity="1" />
+    <End Role="TKB" Type="Self.TKB" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MONHOC">
+        <PropertyRef Name="IDMONHOC" />
+      </Principal>
+      <Dependent Role="TKB">
+        <PropertyRef Name="IDMONHOC" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__TKB__IDPHONGHOC__30F848ED">
+    <End Role="PHONGHOC" Type="Self.PHONGHOC" Multiplicity="1" />
+    <End Role="TKB" Type="Self.TKB" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PHONGHOC">
+        <PropertyRef Name="IDPHONGHOC" />
+      </Principal>
+      <Dependent Role="TKB">
+        <PropertyRef Name="IDPHONGHOC" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__TKB__IDSTUDENT__2C3393D0">
+    <End Role="STUDENT" Type="Self.STUDENT" Multiplicity="1" />
+    <End Role="TKB" Type="Self.TKB" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="STUDENT">
+        <PropertyRef Name="IDSTUDENT" />
+      </Principal>
+      <Dependent Role="TKB">
+        <PropertyRef Name="IDSTUDENT" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__USER__IDPERMISSI__32E0915F">
+    <End Role="PERMISSION" Type="Self.PERMISSION" Multiplicity="1" />
+    <End Role="USER" Type="Self.USER" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="PERMISSION">
+        <PropertyRef Name="IDPERMISSION" />
+      </Principal>
+      <Dependent Role="USER">
+        <PropertyRef Name="IDPERMISSION" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__USER__IDROLE__2A4B4B5E">
+    <End Role="ROLE" Type="Self.ROLE" Multiplicity="1" />
+    <End Role="USER" Type="Self.USER" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ROLE">
+        <PropertyRef Name="IDROLE" />
+      </Principal>
+      <Dependent Role="USER">
+        <PropertyRef Name="IDROLE" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+  <Function Name="func_CryptData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar">
+    <Parameter Name="Data" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="proc_CryptData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="Data" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+  <EntityContainer Name="DACSModelStoreContainer">
+    <EntitySet Name="COSO" EntityType="Self.COSO" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CTDT" EntityType="Self.CTDT" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="EVENTS" EntityType="Self.EVENTS" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="HOCKY" EntityType="Self.HOCKY" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MONHOC" EntityType="Self.MONHOC" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="NGANH" EntityType="Self.NGANH" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="NIENKHOA" EntityType="Self.NIENKHOA" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PERMISSION" EntityType="Self.PERMISSION" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="PHONGHOC" EntityType="Self.PHONGHOC" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="ROLE" EntityType="Self.ROLE" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="STUDENT" EntityType="Self.STUDENT" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="TKB" EntityType="Self.TKB" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="USER" EntityType="Self.USER" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="DIEM" EntityType="Self.DIEM" store:Type="Tables" store:Schema="dbo">
+      <DefiningQuery>SELECT 
+    [DIEM].[IDSTUDENT] AS [IDSTUDENT], 
+    [DIEM].[DIEMTB] AS [DIEMTB], 
+    [DIEM].[STCDAT] AS [STCDAT], 
+    [DIEM].[IDTKB] AS [IDTKB]
+    FROM [dbo].[DIEM] AS [DIEM]</DefiningQuery>
+    </EntitySet>
+    <AssociationSet Name="FK__CTDT__IDNGANH__2E1BDC42" Association="Self.FK__CTDT__IDNGANH__2E1BDC42">
+      <End Role="NGANH" EntitySet="NGANH" />
+      <End Role="CTDT" EntitySet="CTDT" />
+    </AssociationSet>
+    <AssociationSet Name="FK__DIEM__IDSTUDENT__2B3F6F97" Association="Self.FK__DIEM__IDSTUDENT__2B3F6F97">
+      <End Role="STUDENT" EntitySet="STUDENT" />
+      <End Role="DIEM" EntitySet="DIEM" />
+    </AssociationSet>
+    <AssociationSet Name="FK__DIEM__IDTKB__35BCFE0A" Association="Self.FK__DIEM__IDTKB__35BCFE0A">
+      <End Role="TKB" EntitySet="TKB" />
+      <End Role="DIEM" EntitySet="DIEM" />
+    </AssociationSet>
+    <AssociationSet Name="FK__EVENTS__IDUSER__29572725" Association="Self.FK__EVENTS__IDUSER__29572725">
+      <End Role="USER" EntitySet="USER" />
+      <End Role="EVENTS" EntitySet="EVENTS" />
+    </AssociationSet>
+    <AssociationSet Name="FK__HOCKY__IDCTDT__33D4B598" Association="Self.FK__HOCKY__IDCTDT__33D4B598">
+      <End Role="CTDT" EntitySet="CTDT" />
+      <End Role="HOCKY" EntitySet="HOCKY" />
+    </AssociationSet>
+    <AssociationSet Name="FK__MONHOC__IDHOCKY__34C8D9D1" Association="Self.FK__MONHOC__IDHOCKY__34C8D9D1">
+      <End Role="HOCKY" EntitySet="HOCKY" />
+      <End Role="MONHOC" EntitySet="MONHOC" />
+    </AssociationSet>
+    <AssociationSet Name="FK__PHONGHOC__IDCOSO__31EC6D26" Association="Self.FK__PHONGHOC__IDCOSO__31EC6D26">
+      <End Role="COSO" EntitySet="COSO" />
+      <End Role="PHONGHOC" EntitySet="PHONGHOC" />
+    </AssociationSet>
+    <AssociationSet Name="FK__STUDENT__IDNGANH__2D27B809" Association="Self.FK__STUDENT__IDNGANH__2D27B809">
+      <End Role="NGANH" EntitySet="NGANH" />
+      <End Role="STUDENT" EntitySet="STUDENT" />
+    </AssociationSet>
+    <AssociationSet Name="FK__STUDENT__IDNIENK__300424B4" Association="Self.FK__STUDENT__IDNIENK__300424B4">
+      <End Role="NIENKHOA" EntitySet="NIENKHOA" />
+      <End Role="STUDENT" EntitySet="STUDENT" />
+    </AssociationSet>
+    <AssociationSet Name="FK__STUDENT__IDUSER__286302EC" Association="Self.FK__STUDENT__IDUSER__286302EC">
+      <End Role="USER" EntitySet="USER" />
+      <End Role="STUDENT" EntitySet="STUDENT" />
+    </AssociationSet>
+    <AssociationSet Name="FK__TKB__IDMONHOC__2F10007B" Association="Self.FK__TKB__IDMONHOC__2F10007B">
+      <End Role="MONHOC" EntitySet="MONHOC" />
+      <End Role="TKB" EntitySet="TKB" />
+    </AssociationSet>
+    <AssociationSet Name="FK__TKB__IDPHONGHOC__30F848ED" Association="Self.FK__TKB__IDPHONGHOC__30F848ED">
+      <End Role="PHONGHOC" EntitySet="PHONGHOC" />
+      <End Role="TKB" EntitySet="TKB" />
+    </AssociationSet>
+    <AssociationSet Name="FK__TKB__IDSTUDENT__2C3393D0" Association="Self.FK__TKB__IDSTUDENT__2C3393D0">
+      <End Role="STUDENT" EntitySet="STUDENT" />
+      <End Role="TKB" EntitySet="TKB" />
+    </AssociationSet>
+    <AssociationSet Name="FK__USER__IDPERMISSI__32E0915F" Association="Self.FK__USER__IDPERMISSI__32E0915F">
+      <End Role="PERMISSION" EntitySet="PERMISSION" />
+      <End Role="USER" EntitySet="USER" />
+    </AssociationSet>
+    <AssociationSet Name="FK__USER__IDROLE__2A4B4B5E" Association="Self.FK__USER__IDROLE__2A4B4B5E">
+      <End Role="ROLE" EntitySet="ROLE" />
+      <End Role="USER" EntitySet="USER" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

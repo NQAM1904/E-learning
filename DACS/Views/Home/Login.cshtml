@@ -1,0 +1,102 @@
+﻿
+@{
+    ViewBag.Title = "AdminLogin";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="~/HinhAnh/admin-icon-png.png" rel="icon">
+    <title>Quản Lý Hệ Thống</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
+          integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+<script src="~/Scripts/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="~/Scripts/bootbox.min.js"></script>
+    <script src="~/Scripts/bootbox.locales.min.js"></script>
+    <script src="~/Scripts/notify.min.js"></script>
+    <script src="~/Scripts/notify.js"></script>
+    @*<script src="~/Scripts/bootbox.js"></script>*@
+</head>
+<body>
+    <div class="container">
+        <br />
+        <h1>Đăng nhập hệ thống</h1>
+        <form method="post" action="/Home/AdminLogin" id="userForm">
+            @if (!String.IsNullOrEmpty(ViewBag.Error))
+            {
+
+                <script type="text/javascript">
+                  let nameNotify = @Html.Raw(Json.Encode(@ViewBag.Error));
+                  $.notify(nameNotify, "error");
+                </script>
+            }
+            @if (!String.IsNullOrEmpty(ViewBag.Error2))
+            {
+
+                <script type="text/javascript">
+                   let nameNotify = @Html.Raw(Json.Encode(@ViewBag.Error2));
+                   $.notify(nameNotify, "error");
+                </script>
+            }
+            <div class="form-group">
+                <input type="text" class="form-control" id="username" name="USERNAME"
+                       placeholder="Nhập tên đăng nhập" >
+            </div>
+            <div class="form-group">
+                <input type="password" class="form-control" id="password" name="PASSWORD" placeholder="Nhập mật khẩu" >
+            </div>
+            <div class="form-group">
+                <button class="btn btn-outline-primary btn-block" onclick="Login()">Đăng nhập</button>
+            </div>
+            <script type="text/javascript">
+                var input = document.getElementById("password");
+                input.addEventListener("keyup", function (event) {
+                    if (event.keyCode === 13) {
+                        event.preventDefault();
+                        Login();
+                    }
+                });
+                var input2 = document.getElementById("username");
+                input2.addEventListener("keyup", function (event) {
+                    if (event.keyCode === 13) {
+                        if ($("#password").val().length < 1) {
+                            $("#password").focus();
+                            return;
+                        }
+                        event.preventDefault();
+                        Login();
+                    }
+                });
+
+                function Login() {
+                    if ($("#username").val().length < 1 || $("#password").val().length < 1) {
+                        bootbox.alert("Vui lòng nhập điền đủ thông tin bên trên");
+                        return;
+                    }
+                    var dialog = bootbox.dialog({
+                        centerVertical: true,
+                        message: '<p class="text-center mb-0"><i class="fas fa-circle-notch fa-spin"></i> Vui lòng đợi trong giây lát...</p>',
+                        closeButton: false,
+                    }).on('shown.bs.modal', function () {
+                        $("#userForm").submit();
+
+                    });
+                }
+            </script>
+        </form>
+    </div>
+
+
+</body>
+</html>
+

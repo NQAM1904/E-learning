@@ -1,0 +1,155 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="DATHINHModelStoreContainer" CdmEntityContainer="DATHINHEntities">
+    <EntitySetMapping Name="COSOes">
+      <EntityTypeMapping TypeName="DATHINHModel.COSO">
+        <MappingFragment StoreEntitySet="COSO">
+          <ScalarProperty Name="IDCOSO" ColumnName="IDCOSO" />
+          <ScalarProperty Name="TENCS" ColumnName="TENCS" />
+          <ScalarProperty Name="PHONGHOC" ColumnName="PHONGHOC" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DANHMUCSKs">
+      <EntityTypeMapping TypeName="DATHINHModel.DANHMUCSK">
+        <MappingFragment StoreEntitySet="DANHMUCSK">
+          <ScalarProperty Name="IDDANHMUC" ColumnName="IDDANHMUC" />
+          <ScalarProperty Name="TENDANHMUC" ColumnName="TENDANHMUC" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DIEMs">
+      <EntityTypeMapping TypeName="DATHINHModel.DIEM">
+        <MappingFragment StoreEntitySet="DIEM">
+          <ScalarProperty Name="IDSTUDENT" ColumnName="IDSTUDENT" />
+          <ScalarProperty Name="DIEMTB" ColumnName="DIEMTB" />
+          <ScalarProperty Name="STCDAT" ColumnName="STCDAT" />
+          <ScalarProperty Name="IDDIEM" ColumnName="IDDIEM" />
+          <ScalarProperty Name="TONGDIEM" ColumnName="TONGDIEM" />
+          <ScalarProperty Name="IDMONHOC" ColumnName="IDMONHOC" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="EVENTS">
+      <EntityTypeMapping TypeName="DATHINHModel.EVENT">
+        <MappingFragment StoreEntitySet="EVENTS">
+          <ScalarProperty Name="IDEVENTS" ColumnName="IDEVENTS" />
+          <ScalarProperty Name="TENEVENT" ColumnName="TENEVENT" />
+          <ScalarProperty Name="THOIGIANEV" ColumnName="THOIGIANEV" />
+          <ScalarProperty Name="IDUSER" ColumnName="IDUSER" />
+          <ScalarProperty Name="IDDANHMUC" ColumnName="IDDANHMUC" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="HOCKies">
+      <EntityTypeMapping TypeName="DATHINHModel.HOCKY">
+        <MappingFragment StoreEntitySet="HOCKY">
+          <ScalarProperty Name="IDHOCKY" ColumnName="IDHOCKY" />
+          <ScalarProperty Name="TENHOCKY" ColumnName="TENHOCKY" />
+          <ScalarProperty Name="IDNAM" ColumnName="IDNAM" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="MONHOCs">
+      <EntityTypeMapping TypeName="DATHINHModel.MONHOC">
+        <MappingFragment StoreEntitySet="MONHOC">
+          <ScalarProperty Name="IDMONHOC" ColumnName="IDMONHOC" />
+          <ScalarProperty Name="TENMONHOC" ColumnName="TENMONHOC" />
+          <ScalarProperty Name="IDMONTIENQUYET" ColumnName="IDMONTIENQUYET" />
+          <ScalarProperty Name="TINCHI" ColumnName="TINCHI" />
+          <ScalarProperty Name="IDHOCKY" ColumnName="IDHOCKY" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="NAMHOCs">
+      <EntityTypeMapping TypeName="DATHINHModel.NAMHOC">
+        <MappingFragment StoreEntitySet="NAMHOC">
+          <ScalarProperty Name="IDNAM" ColumnName="IDNAM" />
+          <ScalarProperty Name="TENNAM" ColumnName="TENNAM" />
+          <ScalarProperty Name="IDNGANH" ColumnName="IDNGANH" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="NGANHs">
+      <EntityTypeMapping TypeName="DATHINHModel.NGANH">
+        <MappingFragment StoreEntitySet="NGANH">
+          <ScalarProperty Name="IDNGANH" ColumnName="IDNGANH" />
+          <ScalarProperty Name="NAMENGANH" ColumnName="NAMENGANH" />
+          <ScalarProperty Name="IDNIENKHOA" ColumnName="IDNIENKHOA" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="NIENKHOAs">
+      <EntityTypeMapping TypeName="DATHINHModel.NIENKHOA">
+        <MappingFragment StoreEntitySet="NIENKHOA">
+          <ScalarProperty Name="IDNIENKHOA" ColumnName="IDNIENKHOA" />
+          <ScalarProperty Name="NAMENIENKHOA" ColumnName="NAMENIENKHOA" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="PERMISSIONs">
+      <EntityTypeMapping TypeName="DATHINHModel.PERMISSION">
+        <MappingFragment StoreEntitySet="PERMISSION">
+          <ScalarProperty Name="IDPERMISSION" ColumnName="IDPERMISSION" />
+          <ScalarProperty Name="NAMEPERMISSION" ColumnName="NAMEPERMISSION" />
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ROLEs">
+      <EntityTypeMapping TypeName="DATHINHModel.ROLE">
+        <MappingFragment StoreEntitySet="ROLE">
+          <ScalarProperty Name="IDROLE" ColumnName="IDROLE" />
+          <ScalarProperty Name="NAMEROLE" ColumnName="NAMEROLE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="STUDENTs">
+      <EntityTypeMapping TypeName="DATHINHModel.STUDENT">
+        <MappingFragment StoreEntitySet="STUDENT">
+          <ScalarProperty Name="IDSTUDENT" ColumnName="IDSTUDENT" />
+          <ScalarProperty Name="IDUSER" ColumnName="IDUSER" />
+          <ScalarProperty Name="MSSV" ColumnName="MSSV" />
+          <ScalarProperty Name="IDNGANH" ColumnName="IDNGANH" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TIETHOCs">
+      <EntityTypeMapping TypeName="DATHINHModel.TIETHOC">
+        <MappingFragment StoreEntitySet="TIETHOC">
+          <ScalarProperty Name="IDTIETHOC" ColumnName="IDTIETHOC" />
+          <ScalarProperty Name="SOTIETHOC" ColumnName="SOTIETHOC" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="TKBs">
+      <EntityTypeMapping TypeName="DATHINHModel.TKB">
+        <MappingFragment StoreEntitySet="TKB">
+          <ScalarProperty Name="IDTKB" ColumnName="IDTKB" />
+          <ScalarProperty Name="IDSTUDENT" ColumnName="IDSTUDENT" />
+          <ScalarProperty Name="THOIGIANBATDAU" ColumnName="THOIGIANBATDAU" />
+          <ScalarProperty Name="THOIGIANKETTHUC" ColumnName="THOIGIANKETTHUC" />
+          <ScalarProperty Name="IDMONHOC" ColumnName="IDMONHOC" />
+          <ScalarProperty Name="IDCOSO" ColumnName="IDCOSO" />
+          <ScalarProperty Name="IDTIETHOC" ColumnName="IDTIETHOC" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="USERs">
+      <EntityTypeMapping TypeName="DATHINHModel.USER">
+        <MappingFragment StoreEntitySet="USER">
+          <ScalarProperty Name="IDUSER" ColumnName="IDUSER" />
+          <ScalarProperty Name="USERNAME" ColumnName="USERNAME" />
+          <ScalarProperty Name="PASSWORD" ColumnName="PASSWORD" />
+          <ScalarProperty Name="FULLNAME" ColumnName="FULLNAME" />
+          <ScalarProperty Name="PHONE" ColumnName="PHONE" />
+          <ScalarProperty Name="ADDRESS" ColumnName="ADDRESS" />
+          <ScalarProperty Name="IDROLE" ColumnName="IDROLE" />
+          <ScalarProperty Name="IDPERMISSION" ColumnName="IDPERMISSION" />
+          <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="proc_CryptData" FunctionName="DATHINHModel.Store.proc_CryptData" />
+  </EntityContainerMapping>
+</Mapping>

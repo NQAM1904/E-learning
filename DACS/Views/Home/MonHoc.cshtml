@@ -1,0 +1,285 @@
+﻿
+@{
+    ViewBag.Title = "MonHoc";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
+<style>
+    h2 {
+        margin-left: 20px;
+    }
+
+    .btn-add {
+        margin-right: 20px;
+    }
+</style>
+
+<div class="container-fluid">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/Home/Index">Quản lý</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Môn học</li>
+        </ol>
+    </nav>
+
+
+</div>
+
+
+<div class="text-right btn-add">
+    <button type="button" class="btn btn-primary btn-lg" onclick="addMonHoc()"><i style="padding-right:5px" class="fas fa-plus"></i>Thêm Môn Học</button>
+</div>
+
+<br />
+<div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-striped" id="myTable">
+            <thead>
+                <tr>
+
+                    <th scope="col">Tên môn học</th>
+                    <th scope="col">Tín chỉ</th>
+                    <th scope="col">Ngành</th>
+                    <th scope="col">Học kỳ</th>
+                    <th scope="col">Môn tiên quyết</th>
+                    <th scope="col">Chức năng</th>
+                </tr>
+            </thead>
+            <tbody>
+                @using (DATHINHEntities db = new DATHINHEntities())
+                {
+
+                    var monhoc = db.MONHOCs.ToList();
+                    foreach (var item in monhoc.ToList())
+                    {
+                        var hocky = db.HOCKies.Where(x => x.IDHOCKY == item.IDHOCKY).FirstOrDefault();
+                        var nam = db.NAMHOCs.Where(x => x.IDNAM == hocky.IDNAM).FirstOrDefault();
+                        var nganh = db.NGANHs.Where(x => x.IDNGANH == nam.IDNGANH).FirstOrDefault();
+
+                        <tr>
+                            <td>@item.TENMONHOC</td>
+                            <td>@item.TINCHI</td>
+                            <td>@nganh.NAMENGANH</td>
+                            <td>@item.HOCKY.TENHOCKY</td>
+                            <td>
+                                @if (item.IDMONTIENQUYET != 0)
+                                {
+
+                                    foreach (var mhtq in db.MONHOCs.Where(p => p.IDMONHOC == item.IDMONTIENQUYET).ToList())
+                                    {
+                                        @mhtq.TENMONHOC;
+                                    }
+
+                                }
+                                else
+                                {
+                                    <p>Không có môn tiên quyết</p>
+                                }
+                            </td>
+
+
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-primary mr-10" onclick="EditNganh(@item.IDMONHOC)"><i class="fa fa-edit"></i></button>
+                                    <button type="button" class="btn btn-danger ml-10" onclick="DeleteNganh(@item.IDMONHOC,'@item.IDMONHOC')"><i class="fa fa-trash"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<!--Model Thêm-->
+<div id="modal" class="modal fade create-service-md" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thông tin môn học</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label class="col-form-label">Niên Khóa</label>
+                        <select class="form-control" name="NIENKHOA" onchange="UpdateNganh()" id="idNienKhoa">
+                            @using (DATHINHEntities db = new DATHINHEntities())
+                            {
+
+                                foreach (var idNienKhoa in db.NIENKHOAs.ToList())
+                                {
+                                    <option value="@idNienKhoa.IDNIENKHOA">@idNienKhoa.NAMENIENKHOA</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label">Ngành</label>
+                        <select class="form-control" name="NGANH" id="IDNGANH" onchange="UpdateNam()">
+                            @using (DATHINHEntities db = new DATHINHEntities())
+                            {
+
+                                foreach (var idNganh in db.NGANHs.ToList())
+                                {
+                                    <option value="@idNganh.IDNGANH" class="option-nganh" id-nienkhoa="@idNganh.IDNIENKHOA">@idNganh.NAMENGANH</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label">Năm</label>
+                        <select class="form-control" name="NAM" id="IDNAM" onchange="UpdateHocKy()">
+                            @using (DATHINHEntities db = new DATHINHEntities())
+                            {
+
+                                foreach (var idNam in db.NAMHOCs.ToList())
+                                {
+                                    <option value="@idNam.IDNAM" class="option-nam" id-nganh="@idNam.IDNGANH">@idNam.TENNAM</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label">Học Kỳ</label>
+                        <select class="form-control" name="HOCKY" id="IDHOCKY">
+                            @using (DATHINHEntities db = new DATHINHEntities())
+                            {
+
+                                foreach (var idHocKy in db.HOCKies.ToList())
+                                {
+                                    <option value="@idHocKy.IDHOCKY" class="option-hocky" id-hocky="@idHocKy.IDNAM">@idHocKy.TENHOCKY</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label">Tên môn học</label>
+                        <input type="text" class="form-control" name="MONHOC">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label">Số tín chỉ</label>
+                        <input type="text" class="form-control" name="TINCHI">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-form-label">Môn tiên quyết</label>
+                        <select class="form-control" name="IDMONTIENQUYET" id="IDMONTIENQUYET">
+                            @using (DATHINHEntities db = new DATHINHEntities())
+                            {
+
+                                foreach (var idTQ in db.MONHOCs.ToList())
+                                {
+                                    <option value="@idTQ.IDMONHOC" class="option-mtq">@idTQ.TENMONHOC</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" onclick="SaveInfo()"><i class="far fa-save"></i> Lưu lại</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+
+
+    });
+
+    let idNganh = 0;
+
+    function addMonHoc() {
+        idNganh = 0;
+
+        $("[name='MONHOC']").val('');
+        $("[name='TINCHI']").val('');
+        $("[name='HOCKY']").val('');
+        $("[name='IDMONTIENQUYET']").val('');
+        $("#modal").modal("show");
+    }
+
+    UpdateNganh();
+    function UpdateNganh() {
+
+        var idnienkhoa = $("#idNienKhoa").val();
+        $(".option-nganh").each(function () {
+            var option_nganh = $(this).attr("id-nienkhoa");
+            if (option_nganh == idnienkhoa) $(this).show()
+            else $(this).hide();
+        });
+        $("#IDNGANH").val("");
+        UpdateNam();
+    }
+    function UpdateNam() {
+        var idnganh = $("#IDNGANH").val();
+        $('.option-nam').each(function () {
+            var option_nam = $(this).attr("id-nganh");
+            if (option_nam == idnganh) $(this).show()
+            else $(this).hide();
+        });
+        $("#IDNAM").val("");
+        UpdateHocKy();
+    }
+    function UpdateHocKy() {
+        var idnam = $("#IDNAM").val();
+        $(".option-hocky").each(function () {
+            var option_hocky = $(this).attr("id-hocky");
+            if (option_hocky == idnam) $(this).show();
+            else $(this).hide();
+        });
+        $("#IDHOCKY").val("")
+    }
+
+
+    function SaveInfo() {
+
+        let monhoc = $("[name='MONHOC']").val();
+        let hocky = $("[name='HOCKY']").val();
+        let tinchi = $("[name='TINCHI']").val();
+        let montienquyet = $("[name='IDMONTIENQUYET']").val()
+        if (monhoc == '' || tinchi == '') {
+            $.notify("Vui lòng nhập thông tin !", "error");
+            return;
+        }
+        $.ajax({
+            url: '/Ajax/PostMonHoc',
+            type: 'POST',
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            dataType: "json",
+            data: {
+                TENMONHOC: monhoc,
+                IDMONTIENQUYET: montienquyet,
+                TINCHI: tinchi,
+                IDHOCKY: hocky
+
+
+            },
+        }).done(function (result) {
+            if (result.Success) {
+                alert('Cập nhật thành công');
+                location.reload();
+                return;
+            }
+
+        });
+
+    }
+
+</script>
+
+
+

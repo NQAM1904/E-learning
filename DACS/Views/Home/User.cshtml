@@ -1,0 +1,262 @@
+﻿
+@{
+    ViewBag.Title = "User";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
+
+<style>
+    h2 {
+        margin-left: 20px;
+    }
+
+    .btn-add {
+        margin-right: 20px;
+    }
+</style>
+
+<div class="container-fluid">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/Home/Index">Quản lý</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Tài khoản</li>
+        </ol>
+    </nav>
+
+
+</div>
+<h2>Tài khoản</h2>
+<br />
+
+<div class="text-right btn-add">
+    <button type="button" class="btn btn-primary btn-lg" onclick="addUser()"><i style="padding-right:5px" class="fas fa-plus"></i>Thêm tài khoản</button>
+</div>
+
+<br />
+<div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-striped" id="myTable">
+            <thead>
+                <tr>
+
+                    <th scope="col">Tên Họ tên</th>
+                    <th scope="col">Số điện thoại</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Chức vụ</th>
+                    <th scope="col">Chức năng</th>
+                </tr>
+            </thead>
+            <tbody>
+                @using (DATHINHEntities db = new DATHINHEntities())
+                {
+
+                    var user = db.USERs.ToList();
+                    foreach (var item in user.ToList())
+                    {
+                        
+                        <tr>
+                            <td>@item.FULLNAME</td>
+                            <td>@item.PHONE</td>
+                            <td>@item.EMAIL</td>
+                            <td>@item.ROLE.NAMEROLE</td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-primary mr-10" onclick="EditUser(@item.IDUSER)"><i class="fa fa-edit"></i></button>
+                                    <button type="button" class="btn btn-danger ml-10" onclick="DeleteUser(@item.IDUSER,'@item.IDUSER')"><i class="fa fa-trash"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<!--Model Thêm-->
+<div id="modal" class="modal fade create-service-md" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thông tin tài khoản</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label class="col-form-label">Tên đăng nhập</label>
+                            <input type="text" class="form-control" name="USERNAME">
+                        </div>
+                        @*<div class="form-group col-6">
+                                <label class="col-form-label">Mật khẩu</label>
+                                <div class="input-group" id="show_hide_password">
+                                    <input class="form-control" readonly type="password" name="PASSWORD">
+                                    <div class="input-group-addon" style="margin-top: 6px; margin-left: 10px">
+                                        <a href="#"><i class="fa fa-eye-slash" style="color: silver" aria-hidden="true"></i></a>
+                                    </div>
+                                </div>
+                            </div>*@
+                        <div class="form-group col-6">
+                            <label class="col-form-label">Email</label>
+                            <input type="text" class="form-control" name="EMAIL">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label class="col-form-label">Họ tên</label>
+                            <input type="text" class="form-control" name="FULLNAME">
+                        </div>
+                        <div class="form-group col-6">
+                            <label class="col-form-label">Số điện thoại</label>
+                            <input type="number" class="form-control" name="PHONE">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-form-label">Chức vụ</label>
+                        <select id="inputState" name="ROLE" class="form-control select">
+                            @using (DATHINHEntities db = new DATHINHEntities())
+                            {
+                                foreach (var item in db.ROLEs.ToList())
+                                {
+                                    <option value="@item.IDROLE">@item.NAMEROLE</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" onclick="SaveInfo()"><i class="far fa-save"></i> Lưu lại</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+
+        $("#show_hide_password a").on('click', function (event) {
+            event.preventDefault();
+            if ($('#show_hide_password input').attr("type") == "text") {
+                $('#show_hide_password input').attr('type', 'password');
+                $('#show_hide_password i').addClass("fa-eye-slash");
+                $('#show_hide_password i').removeClass("fa-eye");
+            } else if ($('#show_hide_password input').attr("type") == "password") {
+                $('#show_hide_password input').attr('type', 'text');
+                $('#show_hide_password i').removeClass("fa-eye-slash");
+                $('#show_hide_password i').addClass("fa-eye");
+            }
+        });
+    });
+
+    let idTaikhoan = 0;
+
+    function addUser() {
+        idTaikhoan = 0;
+        $("[name='USERNAME']").val('');
+        $("[name='PASSWORD']").val('');
+        $("[name='FULLNAME']").val('');
+        $("[name='PHONE']").val('');
+        $("[name='EMAIL']").val('');
+        $("[name='ROLE']").val('');
+        $("#modal").modal("show");
+    }
+
+    function SaveInfo() {
+
+        setTimeout(function () {
+            var dialog = bootbox.dialog({
+                centerVertical: true,
+                message: '<p class="text-center mb-0"><i class="fas fa-circle-notch fa-spin"></i> Vui lòng đợi trong giây lát...</p>',
+                closeButton: false,
+            }).on('shown.bs.modal', function () {
+                setTimeout(function () {
+                    location.reload();
+                }, 1000);
+            });
+        });
+
+        let username = $("[name='USERNAME']").val();
+        let password = $("[name='PASSWORD']").val();
+        let fullname = $("[name='FULLNAME']").val();
+        let phone = $("[name='PHONE']").val();
+        let email = $("[name='EMAIL']").val();
+        let role = $("[name='ROLE']").val();
+        if (username == '' || fullname == '' || phone == '' || email == '') {
+            $.notify('Vui lòng điền đủ thông tin!', 'warn');
+        }
+        $.ajax({
+            url: '/Ajax/PostUser',
+            type: 'POST',
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            dataType: "json",
+            data: {
+                FULLNAME: fullname,
+                USERNAME: username,
+                PASSWORD: password,
+                PHONE: phone,
+                EMAIL: email,
+                IDROLE: role,
+                IDUSER: idTaikhoan,
+                IDPERMISSION: 1
+            },
+        }).done(function (result) {
+            if (result.Success) {
+                alert('Cập nhật tài khoản thành công');
+                location.reload();
+                return;
+            }
+        });
+
+
+
+    }
+    function EditUser(id) {
+        idTaikhoan = id;
+        $.ajax({
+            url: '/Ajax/GetUser/' + idTaikhoan,
+            type: 'GET',
+            dataType: 'text',
+            data: {
+                id: idTaikhoan,
+            }
+        }).done(function (ketqua) {
+            var json = JSON.parse(ketqua);
+            $("#addTitle").html("Tài khoản người dùng");
+            $("[name='USERNAME']").val(json.USERNAME);
+            $("[name='FULLNAME']").val(json.FULLNAME);
+            $("[name='PHONE']").val(json.PHONE);
+            $("[name='EMAIL']").val(json.EMAIL);
+            $("[name='ROLE']").val(json.ROLE);
+            $("#modal").modal("show");
+
+        });
+    }
+    function DeleteUser(id) {
+        if (!confirm("Bạn có muốn xóa tài khoản này không?")) return;
+        $.ajax({
+            url: '/Ajax/DeleteUser/' + id,
+            type: 'POST',
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            dataType: "json",
+        }).done(function (ketqua) {
+            if (ketqua.Success) {
+                $.notify("Xóa thành công !", "success");
+                location.reload();
+                return;
+            }
+        }).fail(function (result) {
+            if (!result.Success) {
+                $.notify("Có lỗi xảy ra !", "error");
+            }
+        });
+    }
+</script>
+

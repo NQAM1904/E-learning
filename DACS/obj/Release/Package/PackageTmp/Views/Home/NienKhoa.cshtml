@@ -1,0 +1,147 @@
+﻿
+@{
+    ViewBag.Title = "NienKhoa";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
+<style>
+    h2 {
+        margin-left: 20px;
+    }
+
+    .btn-add {
+        margin-right: 20px;
+    }
+</style>
+
+<div class="container-fluid">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/Home/Index">Quản lý</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Niên khóa</li>
+        </ol>
+    </nav>
+
+
+</div>
+
+
+<div class="text-right btn-add">
+    <button type="button" class="btn btn-primary btn-lg" onclick="addNienKhoa()"><i style="padding-right:5px" class="fas fa-plus"></i>Thêm Niên Khoá</button>
+</div>
+
+<br />
+<div class="card-body">
+    <div class="table-responsive">
+        <table class="table table-striped" id="myTable">
+            <thead>
+                <tr>
+
+                    <th scope="col">Niên khóa</th>
+                    <th scope="col">Chức năng</th>
+                </tr>
+            </thead>
+            <tbody>
+                @using (DACSEntities db = new DACSEntities())
+                {
+
+                    var nk = db.NIENKHOAs.ToList();
+                    foreach (var item in nk.ToList())
+                    {
+                        <tr>
+                            <td>@item.NAMENIENKHOA</td>
+
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-primary mr-10" onclick="EditNganh(@item.IDNIENKHOA)"><i class="fa fa-edit"></i></button>
+                                    <button type="button" class="btn btn-danger ml-10" onclick="DeleteNganh(@item.IDNIENKHOA,'@item.IDNIENKHOA')"><i class="fa fa-trash"></i></button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+<!--Model Thêm-->
+<div id="modal" class="modal fade create-service-md" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Thông tin niên khóa</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <label class="col-form-label">Niên khóa</label>
+                    <input type="text" class="form-control" name="NIENKHOA">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+                <button type="button" class="btn btn-primary" onclick="SaveInfo()"><i class="far fa-save"></i> Lưu lại</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#myTable').DataTable();
+
+
+    });
+
+    let idnk = 0;
+
+    function addNienKhoa() {
+        idNganh = 0;
+
+        $("[name='NIENKHOA']").val('');
+
+        $("#modal").modal("show");
+    }
+
+    function SaveInfo() {
+        let nienkhoa = $("[name='NIENKHOA']").val();
+
+        if (nienkhoa == '') {
+            $.notify("Vui lòng nhập thông tin !", "error");
+            return;
+        }
+        $.ajax({
+            url: '/Ajax/PostNienKhoa',
+            type: 'POST',
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            dataType: "json",
+            data: {
+                NAMENIENKHOA: nienkhoa,
+
+            },
+        }).done(function (result) {
+            if (result.Success) {
+                alert('Cập nhật thành công');
+                location.reload();
+                return;
+            }
+
+        });
+
+    }
+    function EditNganh(id) {
+        alert('chức năng đang phát triển');
+    }
+    function DeleteNganh(id) {
+        alert('chức năng đang phát triển');
+    }
+</script>
+
+
+
