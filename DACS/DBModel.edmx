@@ -5,6 +5,20 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="DATHINHModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="BUOIHOC">
+          <Key>
+            <PropertyRef Name="IDBUOIHOC" />
+          </Key>
+          <Property Name="IDBUOIHOC" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DAY" Type="nvarchar" MaxLength="255" />
+        </EntityType>
+        <EntityType Name="CAHOC">
+          <Key>
+            <PropertyRef Name="IDCAHOC" />
+          </Key>
+          <Property Name="IDCAHOC" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SOCA" Type="nvarchar" MaxLength="250" />
+        </EntityType>
         <EntityType Name="COSO">
           <Key>
             <PropertyRef Name="IDCOSO" />
@@ -49,6 +63,19 @@
           <Property Name="TENHOCKY" Type="nvarchar" MaxLength="255" />
           <Property Name="IDNAM" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="LICHHOCTUAN">
+          <Key>
+            <PropertyRef Name="IDLICHHOC" />
+          </Key>
+          <Property Name="IDLICHHOC" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SOBUOIHOC" Type="int" Nullable="false" />
+          <Property Name="IDBUOIHOC1" Type="int" Nullable="false" />
+          <Property Name="IDCAHOC1" Type="int" Nullable="false" />
+          <Property Name="IDBUOIHOC2" Type="int" />
+          <Property Name="IDCAHOC2" Type="int" />
+          <Property Name="IDBUOIHOC3" Type="int" />
+          <Property Name="IDCAHOC3" Type="int" />
+        </EntityType>
         <EntityType Name="MONHOC">
           <Key>
             <PropertyRef Name="IDMONHOC" />
@@ -64,7 +91,7 @@
             <PropertyRef Name="IDNAM" />
           </Key>
           <Property Name="IDNAM" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-          <Property Name="TENNAM" Type="int" />
+          <Property Name="TENNAM" Type="datetime" />
           <Property Name="IDNGANH" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="NGANH">
@@ -106,6 +133,16 @@
           <Property Name="MSSV" Type="int" />
           <Property Name="IDNGANH" Type="int" Nullable="false" />
         </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
         <EntityType Name="TIETHOC">
           <Key>
             <PropertyRef Name="IDTIETHOC" />
@@ -124,6 +161,7 @@
           <Property Name="IDMONHOC" Type="int" Nullable="false" />
           <Property Name="IDCOSO" Type="int" Nullable="false" />
           <Property Name="IDTIETHOC" Type="int" Nullable="false" />
+          <Property Name="IDLICHHOC" Type="int" />
         </EntityType>
         <EntityType Name="USER">
           <Key>
@@ -331,18 +369,64 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_TKB_LICHHOCTUAN">
+          <End Role="LICHHOCTUAN" Type="Self.LICHHOCTUAN" Multiplicity="0..1" />
+          <End Role="TKB" Type="Self.TKB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LICHHOCTUAN">
+              <PropertyRef Name="IDLICHHOC" />
+            </Principal>
+            <Dependent Role="TKB">
+              <PropertyRef Name="IDLICHHOC" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
         <Function Name="func_CryptData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar">
           <Parameter Name="Data" Type="varchar" Mode="In" />
         </Function>
         <Function Name="proc_CryptData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
           <Parameter Name="Data" Type="varchar" Mode="In" />
         </Function>
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
         <EntityContainer Name="DATHINHModelStoreContainer">
+          <EntitySet Name="BUOIHOC" EntityType="Self.BUOIHOC" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CAHOC" EntityType="Self.CAHOC" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="COSO" EntityType="Self.COSO" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DANHMUCSK" EntityType="Self.DANHMUCSK" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="DIEM" EntityType="Self.DIEM" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EVENTS" EntityType="Self.EVENTS" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HOCKY" EntityType="Self.HOCKY" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="LICHHOCTUAN" EntityType="Self.LICHHOCTUAN" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="MONHOC" EntityType="Self.MONHOC" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NAMHOC" EntityType="Self.NAMHOC" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="NGANH" EntityType="Self.NGANH" Schema="dbo" store:Type="Tables" />
@@ -350,6 +434,7 @@
           <EntitySet Name="PERMISSION" EntityType="Self.PERMISSION" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ROLE" EntityType="Self.ROLE" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="STUDENT" EntityType="Self.STUDENT" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TIETHOC" EntityType="Self.TIETHOC" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TKB" EntityType="Self.TKB" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="USER" EntityType="Self.USER" Schema="dbo" store:Type="Tables" />
@@ -417,12 +502,30 @@
             <End Role="ROLE" EntitySet="ROLE" />
             <End Role="USER" EntitySet="USER" />
           </AssociationSet>
+          <AssociationSet Name="FK_TKB_LICHHOCTUAN" Association="Self.FK_TKB_LICHHOCTUAN">
+            <End Role="LICHHOCTUAN" EntitySet="LICHHOCTUAN" />
+            <End Role="TKB" EntitySet="TKB" />
+          </AssociationSet>
         </EntityContainer>
       </Schema>
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="DATHINHModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="BUOIHOC">
+          <Key>
+            <PropertyRef Name="IDBUOIHOC" />
+          </Key>
+          <Property Name="IDBUOIHOC" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DAY" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <EntityType Name="CAHOC">
+          <Key>
+            <PropertyRef Name="IDCAHOC" />
+          </Key>
+          <Property Name="IDCAHOC" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SOCA" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+        </EntityType>
         <EntityType Name="COSO">
           <Key>
             <PropertyRef Name="IDCOSO" />
@@ -475,6 +578,20 @@
           <NavigationProperty Name="NAMHOC" Relationship="Self.FK__HOCKY__IDNAM__37A5467C" FromRole="HOCKY" ToRole="NAMHOC" />
           <NavigationProperty Name="MONHOCs" Relationship="Self.FK__MONHOC__IDHOCKY__36B12243" FromRole="HOCKY" ToRole="MONHOC" />
         </EntityType>
+        <EntityType Name="LICHHOCTUAN">
+          <Key>
+            <PropertyRef Name="IDLICHHOC" />
+          </Key>
+          <Property Name="IDLICHHOC" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SOBUOIHOC" Type="Int32" Nullable="false" />
+          <Property Name="IDBUOIHOC1" Type="Int32" Nullable="false" />
+          <Property Name="IDCAHOC1" Type="Int32" Nullable="false" />
+          <Property Name="IDBUOIHOC2" Type="Int32" />
+          <Property Name="IDCAHOC2" Type="Int32" />
+          <Property Name="IDBUOIHOC3" Type="Int32" />
+          <Property Name="IDCAHOC3" Type="Int32" />
+          <NavigationProperty Name="TKBs" Relationship="Self.FK_TKB_LICHHOCTUAN" FromRole="LICHHOCTUAN" ToRole="TKB" />
+        </EntityType>
         <EntityType Name="MONHOC">
           <Key>
             <PropertyRef Name="IDMONHOC" />
@@ -493,7 +610,7 @@
             <PropertyRef Name="IDNAM" />
           </Key>
           <Property Name="IDNAM" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TENNAM" Type="Int32" />
+          <Property Name="TENNAM" Type="DateTime" Precision="3" />
           <Property Name="IDNGANH" Type="Int32" Nullable="false" />
           <NavigationProperty Name="HOCKies" Relationship="Self.FK__HOCKY__IDNAM__37A5467C" FromRole="NAMHOC" ToRole="HOCKY" />
           <NavigationProperty Name="NGANH" Relationship="Self.FK__NAMHOC__IDNGANH__30F848ED" FromRole="NAMHOC" ToRole="NGANH" />
@@ -547,6 +664,16 @@
           <NavigationProperty Name="USER" Relationship="Self.FK__STUDENT__IDUSER__2B3F6F97" FromRole="STUDENT" ToRole="USER" />
           <NavigationProperty Name="TKBs" Relationship="Self.FK__TKB__IDSTUDENT__2F10007B" FromRole="STUDENT" ToRole="TKB" />
         </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
         <EntityType Name="TIETHOC">
           <Key>
             <PropertyRef Name="IDTIETHOC" />
@@ -566,7 +693,9 @@
           <Property Name="IDMONHOC" Type="Int32" Nullable="false" />
           <Property Name="IDCOSO" Type="Int32" Nullable="false" />
           <Property Name="IDTIETHOC" Type="Int32" Nullable="false" />
+          <Property Name="IDLICHHOC" Type="Int32" />
           <NavigationProperty Name="COSO" Relationship="Self.FK__TKB__IDCOSO__34C8D9D1" FromRole="TKB" ToRole="COSO" />
+          <NavigationProperty Name="LICHHOCTUAN" Relationship="Self.FK_TKB_LICHHOCTUAN" FromRole="TKB" ToRole="LICHHOCTUAN" />
           <NavigationProperty Name="MONHOC" Relationship="Self.FK__TKB__IDMONHOC__31EC6D26" FromRole="TKB" ToRole="MONHOC" />
           <NavigationProperty Name="STUDENT" Relationship="Self.FK__TKB__IDSTUDENT__2F10007B" FromRole="TKB" ToRole="STUDENT" />
           <NavigationProperty Name="TIETHOC" Relationship="Self.FK__TKB__IDTIETHOC__38996AB5" FromRole="TKB" ToRole="TIETHOC" />
@@ -670,6 +799,18 @@
             </Principal>
             <Dependent Role="MONHOC">
               <PropertyRef Name="IDHOCKY" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TKB_LICHHOCTUAN">
+          <End Role="LICHHOCTUAN" Type="Self.LICHHOCTUAN" Multiplicity="0..1" />
+          <End Role="TKB" Type="Self.TKB" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="LICHHOCTUAN">
+              <PropertyRef Name="IDLICHHOC" />
+            </Principal>
+            <Dependent Role="TKB">
+              <PropertyRef Name="IDLICHHOC" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -782,11 +923,14 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="DATHINHEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="BUOIHOCs" EntityType="Self.BUOIHOC" />
+          <EntitySet Name="CAHOCs" EntityType="Self.CAHOC" />
           <EntitySet Name="COSOes" EntityType="Self.COSO" />
           <EntitySet Name="DANHMUCSKs" EntityType="Self.DANHMUCSK" />
           <EntitySet Name="DIEMs" EntityType="Self.DIEM" />
           <EntitySet Name="EVENTS" EntityType="Self.EVENT" />
           <EntitySet Name="HOCKies" EntityType="Self.HOCKY" />
+          <EntitySet Name="LICHHOCTUANs" EntityType="Self.LICHHOCTUAN" />
           <EntitySet Name="MONHOCs" EntityType="Self.MONHOC" />
           <EntitySet Name="NAMHOCs" EntityType="Self.NAMHOC" />
           <EntitySet Name="NGANHs" EntityType="Self.NGANH" />
@@ -794,6 +938,7 @@
           <EntitySet Name="PERMISSIONs" EntityType="Self.PERMISSION" />
           <EntitySet Name="ROLEs" EntityType="Self.ROLE" />
           <EntitySet Name="STUDENTs" EntityType="Self.STUDENT" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
           <EntitySet Name="TIETHOCs" EntityType="Self.TIETHOC" />
           <EntitySet Name="TKBs" EntityType="Self.TKB" />
           <EntitySet Name="USERs" EntityType="Self.USER" />
@@ -824,6 +969,10 @@
           <AssociationSet Name="FK__MONHOC__IDHOCKY__36B12243" Association="Self.FK__MONHOC__IDHOCKY__36B12243">
             <End Role="HOCKY" EntitySet="HOCKies" />
             <End Role="MONHOC" EntitySet="MONHOCs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TKB_LICHHOCTUAN" Association="Self.FK_TKB_LICHHOCTUAN">
+            <End Role="LICHHOCTUAN" EntitySet="LICHHOCTUANs" />
+            <End Role="TKB" EntitySet="TKBs" />
           </AssociationSet>
           <AssociationSet Name="FK__TKB__IDMONHOC__31EC6D26" Association="Self.FK__TKB__IDMONHOC__31EC6D26">
             <End Role="MONHOC" EntitySet="MONHOCs" />
@@ -864,13 +1013,70 @@
           <FunctionImport Name="proc_CryptData" ReturnType="Collection(String)">
             <Parameter Name="Data" Mode="In" Type="String" />
           </FunctionImport>
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(DATHINHModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(DATHINHModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
         </EntityContainer>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="DATHINHModelStoreContainer" CdmEntityContainer="DATHINHEntities">
+          <EntitySetMapping Name="BUOIHOCs">
+            <EntityTypeMapping TypeName="DATHINHModel.BUOIHOC">
+              <MappingFragment StoreEntitySet="BUOIHOC">
+                <ScalarProperty Name="IDBUOIHOC" ColumnName="IDBUOIHOC" />
+                <ScalarProperty Name="DAY" ColumnName="DAY" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CAHOCs">
+            <EntityTypeMapping TypeName="DATHINHModel.CAHOC">
+              <MappingFragment StoreEntitySet="CAHOC">
+                <ScalarProperty Name="IDCAHOC" ColumnName="IDCAHOC" />
+                <ScalarProperty Name="SOCA" ColumnName="SOCA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="COSOes">
             <EntityTypeMapping TypeName="DATHINHModel.COSO">
               <MappingFragment StoreEntitySet="COSO">
@@ -917,6 +1123,20 @@
                 <ScalarProperty Name="IDHOCKY" ColumnName="IDHOCKY" />
                 <ScalarProperty Name="TENHOCKY" ColumnName="TENHOCKY" />
                 <ScalarProperty Name="IDNAM" ColumnName="IDNAM" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="LICHHOCTUANs">
+            <EntityTypeMapping TypeName="DATHINHModel.LICHHOCTUAN">
+              <MappingFragment StoreEntitySet="LICHHOCTUAN">
+                <ScalarProperty Name="IDLICHHOC" ColumnName="IDLICHHOC" />
+                <ScalarProperty Name="SOBUOIHOC" ColumnName="SOBUOIHOC" />
+                <ScalarProperty Name="IDBUOIHOC1" ColumnName="IDBUOIHOC1" />
+                <ScalarProperty Name="IDCAHOC1" ColumnName="IDCAHOC1" />
+                <ScalarProperty Name="IDBUOIHOC2" ColumnName="IDBUOIHOC2" />
+                <ScalarProperty Name="IDCAHOC2" ColumnName="IDCAHOC2" />
+                <ScalarProperty Name="IDBUOIHOC3" ColumnName="IDBUOIHOC3" />
+                <ScalarProperty Name="IDCAHOC3" ColumnName="IDCAHOC3" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -984,6 +1204,17 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="DATHINHModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="TIETHOCs">
             <EntityTypeMapping TypeName="DATHINHModel.TIETHOC">
               <MappingFragment StoreEntitySet="TIETHOC">
@@ -1002,6 +1233,7 @@
                 <ScalarProperty Name="IDMONHOC" ColumnName="IDMONHOC" />
                 <ScalarProperty Name="IDCOSO" ColumnName="IDCOSO" />
                 <ScalarProperty Name="IDTIETHOC" ColumnName="IDTIETHOC" />
+                <ScalarProperty Name="IDLICHHOC" ColumnName="IDLICHHOC" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1021,6 +1253,30 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <FunctionImportMapping FunctionImportName="proc_CryptData" FunctionName="DATHINHModel.Store.proc_CryptData" />
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="DATHINHModel.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="DATHINHModel.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="DATHINHModel.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="DATHINHModel.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DATHINHModel.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="DATHINHModel.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="DATHINHModel.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="DATHINHModel.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="DATHINHModel.Store.sp_upgraddiagrams" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

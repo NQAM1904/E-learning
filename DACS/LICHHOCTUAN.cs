@@ -12,20 +12,24 @@ namespace DACS
     using System;
     using System.Collections.Generic;
     
-    public partial class NAMHOC
+    public partial class LICHHOCTUAN
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public NAMHOC()
+        public LICHHOCTUAN()
         {
-            this.HOCKies = new HashSet<HOCKY>();
+            this.TKBs = new HashSet<TKB>();
         }
     
-        public int IDNAM { get; set; }
-        public Nullable<System.DateTime> TENNAM { get; set; }
-        public int IDNGANH { get; set; }
+        public int IDLICHHOC { get; set; }
+        public int SOBUOIHOC { get; set; }
+        public int IDBUOIHOC1 { get; set; }
+        public int IDCAHOC1 { get; set; }
+        public Nullable<int> IDBUOIHOC2 { get; set; }
+        public Nullable<int> IDCAHOC2 { get; set; }
+        public Nullable<int> IDBUOIHOC3 { get; set; }
+        public Nullable<int> IDCAHOC3 { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<HOCKY> HOCKies { get; set; }
-        public virtual NGANH NGANH { get; set; }
+        public virtual ICollection<TKB> TKBs { get; set; }
     }
 }

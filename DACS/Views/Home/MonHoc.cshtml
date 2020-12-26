@@ -140,7 +140,7 @@
 
                                 foreach (var idNam in db.NAMHOCs.ToList())
                                 {
-                                    <option value="@idNam.IDNAM" class="option-nam" id-nganh="@idNam.IDNGANH">@idNam.TENNAM</option>
+                                    <option value="@idNam.IDNAM" class="option-nam" id-nganh="@idNam.IDNGANH">@idNam.TENNAM.Value.ToString()</option>
                                 }
                             }
                         </select>

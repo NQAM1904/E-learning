@@ -156,6 +156,12 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="BUOIHOC.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="CAHOC.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\AjaxController.cs" />
     <Compile Include="Controllers\ApiMobileController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -193,11 +199,15 @@
     <Compile Include="HOCKY.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="LICHHOCTUAN.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\ApiMobile.cs" />
     <Compile Include="Models\ApiMobileArray.cs" />
     <Compile Include="Models\ApiResult.cs" />
     <Compile Include="Models\Api\GetMonHocApiModal.cs" />
     <Compile Include="Models\Api\GetSinhVienInfo.cs" />
+    <Compile Include="Models\Api\LichHocModel.cs" />
     <Compile Include="Models\Api\Login.cs" />
     <Compile Include="Models\Api\MonHoc.cs" />
     <Compile Include="Models\Api\NamHoc.cs" />
@@ -205,6 +215,7 @@
     <Compile Include="Models\Api\NienKhoa.cs" />
     <Compile Include="Models\Api\ObjProfile.cs" />
     <Compile Include="Models\Api\Register.cs" />
+    <Compile Include="Models\Api\TKBModel.cs" />
     <Compile Include="Models\AuthorizationLogin.cs" />
     <Compile Include="Models\Extension.cs" />
     <Compile Include="Models\UserMasterRespository.cs" />
@@ -227,8 +238,17 @@
     <Compile Include="ROLE.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="sp_helpdiagramdefinition_Result.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sp_helpdiagrams_Result.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Startup.cs" />
     <Compile Include="STUDENT.cs">
+      <DependentUpon>DBModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="sysdiagram.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="TIETHOC.cs">

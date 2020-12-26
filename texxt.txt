@@ -1,0 +1,37 @@
+{
+            "IDTKB": 5,
+            "THOIGIANBATDAU": "2020-12-12T00:00:00",
+            "THOIGIANKETTHUC": "2020-12-31T00:00:00",
+            "TENMONHOC": "Đại số tuyến tính",
+            "PHONGHOC": "E-P.01.02",
+            "SOTIETHOC": 3,
+            "LICHOC": {
+                "IDLICHOC": 1,
+                "SOBUOIHOC": 3,
+                "BUOIHOC1": "Thứ 2",
+                "CAHOC1": "Ca 1 (tiết 1,2,3): từ 06g45' đến 09g00' ",
+                "BUOIHOC2": "Thứ 3",
+                "CAHOC2": "Ca 2 (tiết 4,5,6): từ 09g20' đến 11g35'",
+                "BUOIHOC3": "Thứ 4",
+                "CAHOC3": "Ca 4 (tiết 10,11,12): từ 15g05' đến 17g20'"
+            }
+        }
+
+
+
+{
+              '2020-11-12': {
+                periods: [
+                  { startingDay: false, endingDay: true, color: '#5f9ea0' },
+                  { startingDay: false, endingDay: true, color: '#ffa500' },
+                  { startingDay: true, endingDay: false, color: '#f0e68c' },
+                ],
+              },
+              '2020-11-17': {
+                periods: [
+                  { startingDay: false, endingDay: false, color: '#ffa500' },
+                  { color: 'transparent' },
+                  { startingDay: false, endingDay: false, color: '#f0e68c' },
+                ],
+              },
+            }

@@ -21,8 +21,10 @@ namespace DACS
         public int IDMONHOC { get; set; }
         public int IDCOSO { get; set; }
         public int IDTIETHOC { get; set; }
+        public Nullable<int> IDLICHHOC { get; set; }
     
         public virtual COSO COSO { get; set; }
+        public virtual LICHHOCTUAN LICHHOCTUAN { get; set; }
         public virtual MONHOC MONHOC { get; set; }
         public virtual STUDENT STUDENT { get; set; }
         public virtual TIETHOC TIETHOC { get; set; }

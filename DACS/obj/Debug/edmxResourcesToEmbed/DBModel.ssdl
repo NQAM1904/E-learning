@@ -1,5 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="DATHINHModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="BUOIHOC">
+    <Key>
+      <PropertyRef Name="IDBUOIHOC" />
+    </Key>
+    <Property Name="IDBUOIHOC" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DAY" Type="nvarchar" MaxLength="255" />
+  </EntityType>
+  <EntityType Name="CAHOC">
+    <Key>
+      <PropertyRef Name="IDCAHOC" />
+    </Key>
+    <Property Name="IDCAHOC" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SOCA" Type="nvarchar" MaxLength="250" />
+  </EntityType>
   <EntityType Name="COSO">
     <Key>
       <PropertyRef Name="IDCOSO" />
@@ -44,6 +58,19 @@
     <Property Name="TENHOCKY" Type="nvarchar" MaxLength="255" />
     <Property Name="IDNAM" Type="int" Nullable="false" />
   </EntityType>
+  <EntityType Name="LICHHOCTUAN">
+    <Key>
+      <PropertyRef Name="IDLICHHOC" />
+    </Key>
+    <Property Name="IDLICHHOC" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="SOBUOIHOC" Type="int" Nullable="false" />
+    <Property Name="IDBUOIHOC1" Type="int" Nullable="false" />
+    <Property Name="IDCAHOC1" Type="int" Nullable="false" />
+    <Property Name="IDBUOIHOC2" Type="int" />
+    <Property Name="IDCAHOC2" Type="int" />
+    <Property Name="IDBUOIHOC3" Type="int" />
+    <Property Name="IDCAHOC3" Type="int" />
+  </EntityType>
   <EntityType Name="MONHOC">
     <Key>
       <PropertyRef Name="IDMONHOC" />
@@ -59,7 +86,7 @@
       <PropertyRef Name="IDNAM" />
     </Key>
     <Property Name="IDNAM" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
-    <Property Name="TENNAM" Type="int" />
+    <Property Name="TENNAM" Type="datetime" />
     <Property Name="IDNGANH" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="NGANH">
@@ -101,6 +128,16 @@
     <Property Name="MSSV" Type="int" />
     <Property Name="IDNGANH" Type="int" Nullable="false" />
   </EntityType>
+  <EntityType Name="sysdiagrams">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+    <Property Name="principal_id" Type="int" Nullable="false" />
+    <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="version" Type="int" />
+    <Property Name="definition" Type="varbinary(max)" />
+  </EntityType>
   <EntityType Name="TIETHOC">
     <Key>
       <PropertyRef Name="IDTIETHOC" />
@@ -119,6 +156,7 @@
     <Property Name="IDMONHOC" Type="int" Nullable="false" />
     <Property Name="IDCOSO" Type="int" Nullable="false" />
     <Property Name="IDTIETHOC" Type="int" Nullable="false" />
+    <Property Name="IDLICHHOC" Type="int" />
   </EntityType>
   <EntityType Name="USER">
     <Key>
@@ -326,18 +364,64 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_TKB_LICHHOCTUAN">
+    <End Role="LICHHOCTUAN" Type="Self.LICHHOCTUAN" Multiplicity="0..1" />
+    <End Role="TKB" Type="Self.TKB" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LICHHOCTUAN">
+        <PropertyRef Name="IDLICHHOC" />
+      </Principal>
+      <Dependent Role="TKB">
+        <PropertyRef Name="IDLICHHOC" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
   <Function Name="func_CryptData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="varchar">
     <Parameter Name="Data" Type="varchar" Mode="In" />
   </Function>
   <Function Name="proc_CryptData" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
     <Parameter Name="Data" Type="varchar" Mode="In" />
   </Function>
+  <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="version" Type="int" Mode="In" />
+    <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+  </Function>
+  <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+  </Function>
+  <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+    <Parameter Name="owner_id" Type="int" Mode="In" />
+    <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
   <EntityContainer Name="DATHINHModelStoreContainer">
+    <EntitySet Name="BUOIHOC" EntityType="Self.BUOIHOC" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="CAHOC" EntityType="Self.CAHOC" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="COSO" EntityType="Self.COSO" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DANHMUCSK" EntityType="Self.DANHMUCSK" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="DIEM" EntityType="Self.DIEM" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="EVENTS" EntityType="Self.EVENTS" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="HOCKY" EntityType="Self.HOCKY" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="LICHHOCTUAN" EntityType="Self.LICHHOCTUAN" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="MONHOC" EntityType="Self.MONHOC" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="NAMHOC" EntityType="Self.NAMHOC" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="NGANH" EntityType="Self.NGANH" Schema="dbo" store:Type="Tables" />
@@ -345,6 +429,7 @@
     <EntitySet Name="PERMISSION" EntityType="Self.PERMISSION" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="ROLE" EntityType="Self.ROLE" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="STUDENT" EntityType="Self.STUDENT" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TIETHOC" EntityType="Self.TIETHOC" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="TKB" EntityType="Self.TKB" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="USER" EntityType="Self.USER" Schema="dbo" store:Type="Tables" />
@@ -411,6 +496,10 @@
     <AssociationSet Name="FK__USER__IDROLE__2D27B809" Association="Self.FK__USER__IDROLE__2D27B809">
       <End Role="ROLE" EntitySet="ROLE" />
       <End Role="USER" EntitySet="USER" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TKB_LICHHOCTUAN" Association="Self.FK_TKB_LICHHOCTUAN">
+      <End Role="LICHHOCTUAN" EntitySet="LICHHOCTUAN" />
+      <End Role="TKB" EntitySet="TKB" />
     </AssociationSet>
   </EntityContainer>
 </Schema>

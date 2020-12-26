@@ -1,6 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
   <EntityContainerMapping StorageEntityContainer="DATHINHModelStoreContainer" CdmEntityContainer="DATHINHEntities">
+    <EntitySetMapping Name="BUOIHOCs">
+      <EntityTypeMapping TypeName="DATHINHModel.BUOIHOC">
+        <MappingFragment StoreEntitySet="BUOIHOC">
+          <ScalarProperty Name="IDBUOIHOC" ColumnName="IDBUOIHOC" />
+          <ScalarProperty Name="DAY" ColumnName="DAY" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="CAHOCs">
+      <EntityTypeMapping TypeName="DATHINHModel.CAHOC">
+        <MappingFragment StoreEntitySet="CAHOC">
+          <ScalarProperty Name="IDCAHOC" ColumnName="IDCAHOC" />
+          <ScalarProperty Name="SOCA" ColumnName="SOCA" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="COSOes">
       <EntityTypeMapping TypeName="DATHINHModel.COSO">
         <MappingFragment StoreEntitySet="COSO">
@@ -47,6 +63,20 @@
           <ScalarProperty Name="IDHOCKY" ColumnName="IDHOCKY" />
           <ScalarProperty Name="TENHOCKY" ColumnName="TENHOCKY" />
           <ScalarProperty Name="IDNAM" ColumnName="IDNAM" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="LICHHOCTUANs">
+      <EntityTypeMapping TypeName="DATHINHModel.LICHHOCTUAN">
+        <MappingFragment StoreEntitySet="LICHHOCTUAN">
+          <ScalarProperty Name="IDLICHHOC" ColumnName="IDLICHHOC" />
+          <ScalarProperty Name="SOBUOIHOC" ColumnName="SOBUOIHOC" />
+          <ScalarProperty Name="IDBUOIHOC1" ColumnName="IDBUOIHOC1" />
+          <ScalarProperty Name="IDCAHOC1" ColumnName="IDCAHOC1" />
+          <ScalarProperty Name="IDBUOIHOC2" ColumnName="IDBUOIHOC2" />
+          <ScalarProperty Name="IDCAHOC2" ColumnName="IDCAHOC2" />
+          <ScalarProperty Name="IDBUOIHOC3" ColumnName="IDBUOIHOC3" />
+          <ScalarProperty Name="IDCAHOC3" ColumnName="IDCAHOC3" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -114,6 +144,17 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="sysdiagrams">
+      <EntityTypeMapping TypeName="DATHINHModel.sysdiagram">
+        <MappingFragment StoreEntitySet="sysdiagrams">
+          <ScalarProperty Name="name" ColumnName="name" />
+          <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+          <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="definition" ColumnName="definition" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
     <EntitySetMapping Name="TIETHOCs">
       <EntityTypeMapping TypeName="DATHINHModel.TIETHOC">
         <MappingFragment StoreEntitySet="TIETHOC">
@@ -132,6 +173,7 @@
           <ScalarProperty Name="IDMONHOC" ColumnName="IDMONHOC" />
           <ScalarProperty Name="IDCOSO" ColumnName="IDCOSO" />
           <ScalarProperty Name="IDTIETHOC" ColumnName="IDTIETHOC" />
+          <ScalarProperty Name="IDLICHHOC" ColumnName="IDLICHHOC" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -151,5 +193,29 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <FunctionImportMapping FunctionImportName="proc_CryptData" FunctionName="DATHINHModel.Store.proc_CryptData" />
+    <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="DATHINHModel.Store.sp_alterdiagram" />
+    <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="DATHINHModel.Store.sp_creatediagram" />
+    <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="DATHINHModel.Store.sp_dropdiagram" />
+    <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="DATHINHModel.Store.sp_helpdiagramdefinition">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="DATHINHModel.sp_helpdiagramdefinition_Result">
+          <ScalarProperty Name="version" ColumnName="version" />
+          <ScalarProperty Name="definition" ColumnName="definition" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="DATHINHModel.Store.sp_helpdiagrams">
+      <ResultMapping>
+        <ComplexTypeMapping TypeName="DATHINHModel.sp_helpdiagrams_Result">
+          <ScalarProperty Name="Database" ColumnName="Database" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="Owner" ColumnName="Owner" />
+          <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+        </ComplexTypeMapping>
+      </ResultMapping>
+    </FunctionImportMapping>
+    <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="DATHINHModel.Store.sp_renamediagram" />
+    <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="DATHINHModel.Store.sp_upgraddiagrams" />
   </EntityContainerMapping>
 </Mapping>

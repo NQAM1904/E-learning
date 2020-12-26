@@ -161,7 +161,7 @@ namespace DACS.Controllers
                     int Count = db.USERs.Max(p => p.IDUSER);
                     if (Count > 0)
                     {
-                        
+
 
                         STUDENT std = new STUDENT();
                         std.IDUSER = Count;
@@ -232,14 +232,12 @@ namespace DACS.Controllers
                 {
                     NamHoc Namnew = new NamHoc();
                     Namnew.IDNAM = Nam.IDNAM;
-                    string tNamm = Nam.TENNAM.ToString();
-                    string[] arrListStrr = tNamm.Split('-');
-                    Namnew.TENNAM = (int)Nam.TENNAM;
+                    Namnew.TENNAM = Convert.ToDateTime(Nam.TENNAM).Year;
+                    NamHocArr.Add(Namnew);
                     //if (Int32.Parse(arrListStrr[0]) >= Int32.Parse(arrListStr[0]) && Int32.Parse(arrListStrr[1]) <= Int32.Parse(arrListStr[1]))
                     //{
-
                     //}
-                    NamHocArr.Add(Namnew);
+
 
                 }
                 result.Data = NamHocArr;
@@ -299,7 +297,7 @@ namespace DACS.Controllers
                 }
 
 
-                var HKi = db.HOCKies.Where(x => x.IDHOCKY == dataPost.IDHOCKY && x.IDNAM == dataPost.IDNAM && x.TENHOCKY == HocKiString).FirstOrDefault();
+                var HKi = db.HOCKies.Where(x => x.IDNAM == dataPost.IDNAM && x.TENHOCKY == HocKiString).FirstOrDefault();
                 if (HKi is null)
                 {
                     List<MonHoc> MonHocArr1 = new List<MonHoc>();
@@ -316,6 +314,12 @@ namespace DACS.Controllers
                     MonHoc MonNew = new MonHoc();
                     MonNew.IDMONHOC = Mon.IDMONHOC;
                     MonNew.IDMONTIENQUYET = (int)Mon.IDMONTIENQUYET;
+                    if ((int)Mon.IDMONTIENQUYET > 0)
+                    {
+                        var tenMonTQ = db.MONHOCs.Where(x => x.IDMONHOC == Mon.IDMONTIENQUYET).FirstOrDefault().TENMONHOC;
+                        MonNew.TENMONTIENQUYET = tenMonTQ;
+                    }
+                   
                     MonNew.TENMONHOC = Mon.TENMONHOC;
                     MonNew.TINCHI = (int)Mon.TINCHI;
                     MonNew.IDHOCKY = Mon.IDHOCKY;
@@ -356,6 +360,63 @@ namespace DACS.Controllers
                 result.Success = true;
                 result.Message = "Lấy thông tin sinh viên thành công!";
                 return Json(result);
+            }
+
+        }
+
+        [HttpGet]
+        public JsonResult<ApiMobileArray> GetTKB(int IDSINHVIEN)
+        {
+            ApiMobileArray result = new ApiMobileArray();
+            using (DATHINHEntities db = new DATHINHEntities())
+            {
+                
+
+            
+                var ListTKB = db.TKBs.Where(x => x.IDSTUDENT == IDSINHVIEN).ToList();
+                if (ListTKB is null)
+                {
+
+                    result.Success = false;
+                    result.Message = "Thời khóa biểu không tồn tại!";
+                    return Json(result);
+                }
+                else
+                {
+                    List<TKBModel> TKBArr = new List<TKBModel>();
+                    foreach (var TKB in ListTKB)
+                    {
+                        TKBModel TKBObj = new TKBModel();
+                        TKBObj.IDTKB = TKB.IDTKB;
+                        TKBObj.THOIGIANBATDAU = Convert.ToDateTime(TKB.THOIGIANBATDAU).Date;
+                        TKBObj.THOIGIANKETTHUC = Convert.ToDateTime(TKB.THOIGIANKETTHUC).Date;
+                        TKBObj.TENMONHOC = db.MONHOCs.Where(x => x.IDMONHOC == TKB.IDMONHOC).FirstOrDefault().TENMONHOC;
+                        var CSo = db.COSOes.Where(x => x.IDCOSO == TKB.IDCOSO).FirstOrDefault();
+                        TKBObj.PHONGHOC = CSo.TENCS + "-" + CSo.PHONGHOC;
+                        TKBObj.SOTIETHOC = (int)db.TIETHOCs.Where(x => x.IDTIETHOC == TKB.IDTIETHOC).FirstOrDefault().SOTIETHOC;
+                        LichHocModel LHoc = new LichHocModel();
+                        var LHocDB = db.LICHHOCTUANs.Where(x => x.IDLICHHOC == TKB.IDLICHHOC).FirstOrDefault();
+                        LHoc.IDLICHOC = LHocDB.IDLICHHOC;
+                        LHoc.SOBUOIHOC = LHocDB.SOBUOIHOC;
+                        LHoc.BUOIHOC1 = db.BUOIHOCs.Where(x => x.IDBUOIHOC == LHocDB.IDBUOIHOC1).FirstOrDefault().DAY;
+                        LHoc.CAHOC1 = db.CAHOCs.Where(x => x.IDCAHOC == LHocDB.IDCAHOC1).FirstOrDefault().SOCA;
+                        LHoc.BUOIHOC2 = db.BUOIHOCs.Where(x => x.IDBUOIHOC == LHocDB.IDBUOIHOC2).FirstOrDefault().DAY;
+                        LHoc.CAHOC2 = db.CAHOCs.Where(x => x.IDCAHOC == LHocDB.IDCAHOC2).FirstOrDefault().SOCA;
+                        LHoc.BUOIHOC3 = db.BUOIHOCs.Where(x => x.IDBUOIHOC == LHocDB.IDBUOIHOC3).FirstOrDefault().DAY;
+                        LHoc.CAHOC3 = db.CAHOCs.Where(x => x.IDCAHOC == LHocDB.IDCAHOC3).FirstOrDefault().SOCA;
+                        TKBObj.LICHOC = LHoc;
+                        TKBArr.Add(TKBObj);
+                    }
+
+                    result.Success = true;
+                    result.Message = "Lấy thông thời khóa biểu thành công!";
+                    result.Data = TKBArr;
+                    return Json(result);
+                }
+              
+
+
+               
             }
 
         }

@@ -1,5 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="DATHINHModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="BUOIHOC">
+    <Key>
+      <PropertyRef Name="IDBUOIHOC" />
+    </Key>
+    <Property Name="IDBUOIHOC" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="DAY" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="CAHOC">
+    <Key>
+      <PropertyRef Name="IDCAHOC" />
+    </Key>
+    <Property Name="IDCAHOC" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SOCA" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+  </EntityType>
   <EntityType Name="COSO">
     <Key>
       <PropertyRef Name="IDCOSO" />
@@ -52,6 +66,20 @@
     <NavigationProperty Name="NAMHOC" Relationship="Self.FK__HOCKY__IDNAM__37A5467C" FromRole="HOCKY" ToRole="NAMHOC" />
     <NavigationProperty Name="MONHOCs" Relationship="Self.FK__MONHOC__IDHOCKY__36B12243" FromRole="HOCKY" ToRole="MONHOC" />
   </EntityType>
+  <EntityType Name="LICHHOCTUAN">
+    <Key>
+      <PropertyRef Name="IDLICHHOC" />
+    </Key>
+    <Property Name="IDLICHHOC" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SOBUOIHOC" Type="Int32" Nullable="false" />
+    <Property Name="IDBUOIHOC1" Type="Int32" Nullable="false" />
+    <Property Name="IDCAHOC1" Type="Int32" Nullable="false" />
+    <Property Name="IDBUOIHOC2" Type="Int32" />
+    <Property Name="IDCAHOC2" Type="Int32" />
+    <Property Name="IDBUOIHOC3" Type="Int32" />
+    <Property Name="IDCAHOC3" Type="Int32" />
+    <NavigationProperty Name="TKBs" Relationship="Self.FK_TKB_LICHHOCTUAN" FromRole="LICHHOCTUAN" ToRole="TKB" />
+  </EntityType>
   <EntityType Name="MONHOC">
     <Key>
       <PropertyRef Name="IDMONHOC" />
@@ -70,7 +98,7 @@
       <PropertyRef Name="IDNAM" />
     </Key>
     <Property Name="IDNAM" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="TENNAM" Type="Int32" />
+    <Property Name="TENNAM" Type="DateTime" Precision="3" />
     <Property Name="IDNGANH" Type="Int32" Nullable="false" />
     <NavigationProperty Name="HOCKies" Relationship="Self.FK__HOCKY__IDNAM__37A5467C" FromRole="NAMHOC" ToRole="HOCKY" />
     <NavigationProperty Name="NGANH" Relationship="Self.FK__NAMHOC__IDNGANH__30F848ED" FromRole="NAMHOC" ToRole="NGANH" />
@@ -124,6 +152,16 @@
     <NavigationProperty Name="USER" Relationship="Self.FK__STUDENT__IDUSER__2B3F6F97" FromRole="STUDENT" ToRole="USER" />
     <NavigationProperty Name="TKBs" Relationship="Self.FK__TKB__IDSTUDENT__2F10007B" FromRole="STUDENT" ToRole="TKB" />
   </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
   <EntityType Name="TIETHOC">
     <Key>
       <PropertyRef Name="IDTIETHOC" />
@@ -143,7 +181,9 @@
     <Property Name="IDMONHOC" Type="Int32" Nullable="false" />
     <Property Name="IDCOSO" Type="Int32" Nullable="false" />
     <Property Name="IDTIETHOC" Type="Int32" Nullable="false" />
+    <Property Name="IDLICHHOC" Type="Int32" />
     <NavigationProperty Name="COSO" Relationship="Self.FK__TKB__IDCOSO__34C8D9D1" FromRole="TKB" ToRole="COSO" />
+    <NavigationProperty Name="LICHHOCTUAN" Relationship="Self.FK_TKB_LICHHOCTUAN" FromRole="TKB" ToRole="LICHHOCTUAN" />
     <NavigationProperty Name="MONHOC" Relationship="Self.FK__TKB__IDMONHOC__31EC6D26" FromRole="TKB" ToRole="MONHOC" />
     <NavigationProperty Name="STUDENT" Relationship="Self.FK__TKB__IDSTUDENT__2F10007B" FromRole="TKB" ToRole="STUDENT" />
     <NavigationProperty Name="TIETHOC" Relationship="Self.FK__TKB__IDTIETHOC__38996AB5" FromRole="TKB" ToRole="TIETHOC" />
@@ -247,6 +287,18 @@
       </Principal>
       <Dependent Role="MONHOC">
         <PropertyRef Name="IDHOCKY" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_TKB_LICHHOCTUAN">
+    <End Role="LICHHOCTUAN" Type="Self.LICHHOCTUAN" Multiplicity="0..1" />
+    <End Role="TKB" Type="Self.TKB" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="LICHHOCTUAN">
+        <PropertyRef Name="IDLICHHOC" />
+      </Principal>
+      <Dependent Role="TKB">
+        <PropertyRef Name="IDLICHHOC" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -359,11 +411,14 @@
     </ReferentialConstraint>
   </Association>
   <EntityContainer Name="DATHINHEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="BUOIHOCs" EntityType="Self.BUOIHOC" />
+    <EntitySet Name="CAHOCs" EntityType="Self.CAHOC" />
     <EntitySet Name="COSOes" EntityType="Self.COSO" />
     <EntitySet Name="DANHMUCSKs" EntityType="Self.DANHMUCSK" />
     <EntitySet Name="DIEMs" EntityType="Self.DIEM" />
     <EntitySet Name="EVENTS" EntityType="Self.EVENT" />
     <EntitySet Name="HOCKies" EntityType="Self.HOCKY" />
+    <EntitySet Name="LICHHOCTUANs" EntityType="Self.LICHHOCTUAN" />
     <EntitySet Name="MONHOCs" EntityType="Self.MONHOC" />
     <EntitySet Name="NAMHOCs" EntityType="Self.NAMHOC" />
     <EntitySet Name="NGANHs" EntityType="Self.NGANH" />
@@ -371,6 +426,7 @@
     <EntitySet Name="PERMISSIONs" EntityType="Self.PERMISSION" />
     <EntitySet Name="ROLEs" EntityType="Self.ROLE" />
     <EntitySet Name="STUDENTs" EntityType="Self.STUDENT" />
+    <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
     <EntitySet Name="TIETHOCs" EntityType="Self.TIETHOC" />
     <EntitySet Name="TKBs" EntityType="Self.TKB" />
     <EntitySet Name="USERs" EntityType="Self.USER" />
@@ -401,6 +457,10 @@
     <AssociationSet Name="FK__MONHOC__IDHOCKY__36B12243" Association="Self.FK__MONHOC__IDHOCKY__36B12243">
       <End Role="HOCKY" EntitySet="HOCKies" />
       <End Role="MONHOC" EntitySet="MONHOCs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_TKB_LICHHOCTUAN" Association="Self.FK_TKB_LICHHOCTUAN">
+      <End Role="LICHHOCTUAN" EntitySet="LICHHOCTUANs" />
+      <End Role="TKB" EntitySet="TKBs" />
     </AssociationSet>
     <AssociationSet Name="FK__TKB__IDMONHOC__31EC6D26" Association="Self.FK__TKB__IDMONHOC__31EC6D26">
       <End Role="MONHOC" EntitySet="MONHOCs" />
@@ -441,5 +501,46 @@
     <FunctionImport Name="proc_CryptData" ReturnType="Collection(String)">
       <Parameter Name="Data" Mode="In" Type="String" />
     </FunctionImport>
+    <FunctionImport Name="sp_alterdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_creatediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_dropdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(DATHINHModel.sp_helpdiagramdefinition_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(DATHINHModel.sp_helpdiagrams_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_renamediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="new_diagramname" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_upgraddiagrams" />
   </EntityContainer>
+  <ComplexType Name="sp_helpdiagramdefinition_Result">
+    <Property Type="Int32" Name="version" Nullable="true" />
+    <Property Type="Binary" Name="definition" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagrams_Result">
+    <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+    <Property Type="Int32" Name="OwnerID" Nullable="false" />
+  </ComplexType>
 </Schema>
