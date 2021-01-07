@@ -1,8 +1,10 @@
 ﻿
 @{
-    ViewBag.Title = "HocKy";
+    ViewBag.Title = "DMSuKien";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+ 
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
 <style>
@@ -19,7 +21,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/Home/Index">Quản lý</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Tin Tức</li>
+            <li class="breadcrumb-item active" aria-current="page">Danh mục tin tức</li>
         </ol>
     </nav>
 
@@ -28,7 +30,7 @@
 
 
 <div class="text-right btn-add">
-    <button type="button" class="btn btn-primary btn-lg" onclick="addTinTuc()"><i style="padding-right:5px" class="fas fa-plus"></i>Thêm Tin Tức</button>
+    <button type="button" class="btn btn-primary btn-lg" onclick="addMD()"><i style="padding-right:5px" class="fas fa-plus"></i>Thêm danh mục</button>
 </div>
 
 <br />
@@ -39,9 +41,6 @@
                 <tr>
 
                     <th scope="col">Tiêu đề</th>
-                    <th scope="col">Nội dung</th>
-                    <th scope="col">Thời gian</th>
-                   <th scope="col">Người tạo</th>
                     <th scope="col">Chức năng</th>
                 </tr>
             </thead>
@@ -50,22 +49,18 @@
                 {
 
 
-                    var tintuc = db.EVENTS.ToList();
+                    var tintuc = db.DANHMUCSKs.ToList();
                     foreach (var item in tintuc.ToList())
                     {
-                        var danhmuc = db.DANHMUCSKs.Where(x => x.IDDANHMUC == item.IDDANHMUC).FirstOrDefault();
-                        var user = db.USERs.Where(x => x.IDUSER == item.IDUSER).FirstOrDefault();
+                        
+                    
                         <tr>
-                            <td>@danhmuc.TENDANHMUC</td>
-                            <td>@item.TENEVENT</td>
-                            <td>@item.THOIGIANEV</td>
-                            <td>@user.FULLNAME</td>
-                          
-
+                            <td>@item.TENDANHMUC</td>
+                         
                             <td>
                                 <div class="btn-group" role="group">
-                                    <button type="button" class="btn btn-primary mr-10" onclick="EditSuKien(@item.IDEVENTS)"><i class="fa fa-edit"></i></button>
-                                    <button type="button" class="btn btn-danger ml-10" onclick="DeleteSuKien(@item.IDEVENTS ,'@item.IDEVENTS')"><i class="fa fa-trash"></i></button>
+                                    <button type="button" class="btn btn-primary mr-10" onclick="EditSuKien(@item.IDDANHMUC)"><i class="fa fa-edit"></i></button>
+                                    <button type="button" class="btn btn-danger ml-10" onclick="DeleteSuKien(@item.IDDANHMUC ,'@item.IDDANHMUC')"><i class="fa fa-trash"></i></button>
                                 </div>
                             </td>
                         </tr>
@@ -80,29 +75,17 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Thông tin môn học</h5>
+                <h5 class="modal-title">Thông tin danh mục</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <form>
+                     
                     <div class="form-group">
-                        <label class="col-form-label">Niên Khóa</label>
-                        <select class="form-control" name="TIEUDE">
-                            @using (DATHINHEntities db = new DATHINHEntities())
-                            {
-
-                                foreach (var tieude in db.DANHMUCSKs.ToList())
-                                {
-                                    <option value="@tieude.IDDANHMUC">@tieude.TENDANHMUC</option>
-                                }
-                            }
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-form-label"></label>
-                        <input type="text" class="form-control" name="HOCKY">
+                        <label class="col-form-label">Tên danh mục</label>
+                        <input type="text" class="form-control" name="TIEUDE">
                     </div>
 
 
@@ -124,33 +107,24 @@
 
     });
 
-    let idHK = 0;
+    let idDM = 0;
 
-    function addHocky() {
-        idHK = 0;
-
-        $("[name='TIEUDE']").val('');
+    function addMD() {
+        let idDM = 0;
         $("[name='TIEUDE']").val('');
         $("#modal").modal("show");
     }
 
     function SaveInfo() {
-        let nganh = $("[name='NGANH']").val();
-        let nienkhoa = $("[name='NIENKHOA']").val();
-        if (nganh == '' || nienkhoa == '') {
-            $.notify("Vui lòng nhập thông tin !", "error");
-            return;
-        }
+        let tendanhmuc = $("[name='TIEUDE']").val();
+         
         $.ajax({
-            url: '/Ajax/PostNganh',
+            url: '/Ajax/EditDanhMuc',
             type: 'POST',
             contentType: "application/x-www-form-urlencoded; charset=utf-8",
             dataType: "json",
             data: {
-                NAMENGANH: nganh,
-                IDNIENKHOA: nienkhoa
-
-
+                TENDANHMUC: tendanhmuc
             },
         }).done(function (result) {
             if (result.Success) {
@@ -162,27 +136,26 @@
         });
 
     }
-    function EditNganh(id) {
-        idNganh = id;
+    function EditSuKien(id) {
+        idDM = id;
         $.ajax({
-            url: '/Ajax/GetNganh/' + idNganh,
+            url: '/Ajax/EditDanhMuc/' + idDM,
             type: 'GET',
             dataType: 'text',
             data: {
-                id: idNganh,
+                id: idDM,
             }
         }).done(function (ketqua) {
             var json = JSON.parse(ketqua);
-            $("#addTitle").html("Thông tin ngành");
-            $("[name='NGANH']").val(json.NAMENGANH);
+            $("[name='TIEUDE']").val(json.TIEUDE);
             $("#modal").modal("show");
 
         });
     }
-    function DeleteNganh(id) {
+    function DeleteSuKien(id) {
         if (!confirm("Bạn có muốn xóa ngành này không?")) return;
         $.ajax({
-            url: '/Ajax/DeleteNganh/' + id,
+            url: '/Ajax/DeleteDanhMuc/' + id,
             type: 'POST',
             contentType: "application/x-www-form-urlencoded; charset=utf-8",
             dataType: "json",
@@ -199,6 +172,8 @@
         });
     }
 </script>
+
+
 
 
 

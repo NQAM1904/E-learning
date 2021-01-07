@@ -88,6 +88,16 @@ namespace DACS.Controllers
             if (Session["Loin"] is null) return View("Login");
             return View();
         }
+        public ActionResult DMSuKien()
+        {
+            if (Session["Login"] is null) return View("Login");
+            return View();
+        }
+        public ActionResult SuKien()
+        {
+            if (Session["Login"] is null) return View("Login");
+            return View();
+        }
         public ActionResult Logout()
         {
             Session.Clear();

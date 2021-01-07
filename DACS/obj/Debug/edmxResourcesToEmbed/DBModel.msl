@@ -54,6 +54,7 @@
           <ScalarProperty Name="THOIGIANEV" ColumnName="THOIGIANEV" />
           <ScalarProperty Name="IDUSER" ColumnName="IDUSER" />
           <ScalarProperty Name="IDDANHMUC" ColumnName="IDDANHMUC" />
+          <ScalarProperty Name="HINH" ColumnName="HINH" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

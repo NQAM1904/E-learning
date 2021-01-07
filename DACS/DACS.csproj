@@ -205,11 +205,15 @@
     <Compile Include="Models\ApiMobile.cs" />
     <Compile Include="Models\ApiMobileArray.cs" />
     <Compile Include="Models\ApiResult.cs" />
+    <Compile Include="Models\Api\GetDiem.cs" />
+    <Compile Include="Models\Api\GetMonHoc.cs" />
     <Compile Include="Models\Api\GetMonHocApiModal.cs" />
     <Compile Include="Models\Api\GetSinhVienInfo.cs" />
+    <Compile Include="Models\Api\InsertTKBModel.cs" />
     <Compile Include="Models\Api\LichHocModel.cs" />
     <Compile Include="Models\Api\Login.cs" />
     <Compile Include="Models\Api\MonHoc.cs" />
+    <Compile Include="Models\Api\MonHocInDayModel.cs" />
     <Compile Include="Models\Api\NamHoc.cs" />
     <Compile Include="Models\Api\Nganh.cs" />
     <Compile Include="Models\Api\NienKhoa.cs" />
@@ -345,6 +349,8 @@
     <Content Include="Views\Home\NienKhoa.cshtml" />
     <Content Include="Views\Home\HocKy.cshtml" />
     <Content Include="Views\Home\TinTuc.cshtml" />
+    <Content Include="Views\Home\SuKien.cshtml" />
+    <Content Include="Views\Home\DMSuKien.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

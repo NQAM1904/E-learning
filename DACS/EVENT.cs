@@ -19,6 +19,7 @@ namespace DACS
         public Nullable<System.DateTime> THOIGIANEV { get; set; }
         public int IDUSER { get; set; }
         public int IDDANHMUC { get; set; }
+        public string HINH { get; set; }
     
         public virtual DANHMUCSK DANHMUCSK { get; set; }
         public virtual USER USER { get; set; }

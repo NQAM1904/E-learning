@@ -49,6 +49,7 @@
     <Property Name="THOIGIANEV" Type="datetime" />
     <Property Name="IDUSER" Type="int" Nullable="false" />
     <Property Name="IDDANHMUC" Type="int" Nullable="false" />
+    <Property Name="HINH" Type="nvarchar" MaxLength="250" />
   </EntityType>
   <EntityType Name="HOCKY">
     <Key>

@@ -53,6 +53,7 @@
     <Property Name="THOIGIANEV" Type="DateTime" Precision="3" />
     <Property Name="IDUSER" Type="Int32" Nullable="false" />
     <Property Name="IDDANHMUC" Type="Int32" Nullable="false" />
+    <Property Name="HINH" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
     <NavigationProperty Name="DANHMUCSK" Relationship="Self.FK__EVENTS__IDDANHMU__398D8EEE" FromRole="EVENTS" ToRole="DANHMUCSK" />
     <NavigationProperty Name="USER" Relationship="Self.FK__EVENTS__IDUSER__2C3393D0" FromRole="EVENTS" ToRole="USER" />
   </EntityType>

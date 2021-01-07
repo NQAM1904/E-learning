@@ -14,5 +14,8 @@ namespace DACS.Models.Api
         public string  TENMONTIENQUYET { get; set; }
         public int TINCHI { get; set; }
         public int IDHOCKY { get; set; }
+
+        public int IDCOSO { get; set; }
+        public int IDTIETHOC { get; set; }
     }
 }

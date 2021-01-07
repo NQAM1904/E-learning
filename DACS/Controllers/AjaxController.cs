@@ -14,8 +14,83 @@ namespace DACS.Controllers
     public class AjaxController : Controller
     {
         // GET: Ajax
+        [HttpGet]
+        public JsonResult GetDanhMuc(int id)
+        {
+            //if (Session["AdminLogin"] is null) return null;
 
+            using (DATHINHEntities db = new DATHINHEntities())
+            {
+                
+                var danhmuc = db.DANHMUCSKs.Where(x => x.IDDANHMUC == id).FirstOrDefault();
+                if (danhmuc is null) return null;
+                return new JsonResult()
+                {
+                    Data = new { TIEUDE = danhmuc.TENDANHMUC  },
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                };
+            }
+        }
+        [HttpPost]
+        public JsonResult EditDanhMuc(DANHMUCSK danhmuc)
+        {
+            //if (Session["AdminLogin"] is null) return null;
+            ApiResult result = new ApiResult();
+            if (danhmuc is null)
+            {
+                result.Message = "Vui lòng điền đủ thông tin";
+                return Json(result.Data);
+            }
+            using (DATHINHEntities db = new DATHINHEntities())
+            {
+                DANHMUCSK d = new DANHMUCSK();
+                if (danhmuc.IDDANHMUC > 0) d = db.DANHMUCSKs.Where(x => x.IDDANHMUC == danhmuc.IDDANHMUC).FirstOrDefault();
+                if (d is null)
+                {
+                    result.Message = "Vui lòng thử lại";
+                    return Json(result);
+                }
+                d.IDDANHMUC = danhmuc.IDDANHMUC;
+                d.TENDANHMUC = danhmuc.TENDANHMUC;
+                if (danhmuc.IDDANHMUC == 0) db.DANHMUCSKs.Add(d);
+                try
+                {
+                    db.SaveChanges();
+                    result.Success = true;
+                }
+                catch (Exception ex)
+                {
+                    result.Message = ex.Message;
+                }
+            }
 
+            return Json(result);
+        }
+        [HttpPost]
+        public JsonResult DeleteDanhMuc(int id)
+        {
+            ApiResult result = new ApiResult();
+            using (DATHINHEntities db = new DATHINHEntities())
+            {
+                var danhmuc = db.DANHMUCSKs.Where(x => x.IDDANHMUC == id).FirstOrDefault();
+                if (danhmuc is null)
+                {
+                    result.Message = "Vui lòng thử lại";
+                    return Json(result);
+                }
+                try
+                {
+                    db.DANHMUCSKs.Remove(danhmuc);
+                    db.SaveChanges();
+                    result.Success = true;
+                }
+                catch (Exception ex)
+                {
+                    result.Message = ex.Message;
+                }
+            }
+            return Json(result);
+        }
         public JsonResult GetPosition(int id)
         {
             //if (Session["AdminLogin"] is null) return null;

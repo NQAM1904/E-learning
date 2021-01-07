@@ -1,6 +1,6 @@
 ﻿
 @{
-    ViewBag.Title = "HocKy";
+    ViewBag.Title = "SuKien";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
@@ -41,7 +41,7 @@
                     <th scope="col">Tiêu đề</th>
                     <th scope="col">Nội dung</th>
                     <th scope="col">Thời gian</th>
-                   <th scope="col">Người tạo</th>
+                    <th scope="col">Người tạo</th>
                     <th scope="col">Chức năng</th>
                 </tr>
             </thead>
@@ -60,7 +60,7 @@
                             <td>@item.TENEVENT</td>
                             <td>@item.THOIGIANEV</td>
                             <td>@user.FULLNAME</td>
-                          
+
 
                             <td>
                                 <div class="btn-group" role="group">
@@ -126,7 +126,7 @@
 
     let idHK = 0;
 
-    function addHocky() {
+    function addTinTuc() {
         idHK = 0;
 
         $("[name='TIEUDE']").val('');
