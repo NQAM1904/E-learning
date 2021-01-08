@@ -55,6 +55,7 @@
           <ScalarProperty Name="IDUSER" ColumnName="IDUSER" />
           <ScalarProperty Name="IDDANHMUC" ColumnName="IDDANHMUC" />
           <ScalarProperty Name="HINH" ColumnName="HINH" />
+          <ScalarProperty Name="MOTA" ColumnName="MOTA" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

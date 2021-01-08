@@ -215,6 +215,7 @@
     <Compile Include="Models\Api\MonHoc.cs" />
     <Compile Include="Models\Api\MonHocInDayModel.cs" />
     <Compile Include="Models\Api\NamHoc.cs" />
+    <Compile Include="Models\Api\NEWS.cs" />
     <Compile Include="Models\Api\Nganh.cs" />
     <Compile Include="Models\Api\NienKhoa.cs" />
     <Compile Include="Models\Api\ObjProfile.cs" />
@@ -354,6 +355,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Hinh\" />
     <Folder Include="Views\Ajax\" />
     <Folder Include="Views\ApiMoble\" />
   </ItemGroup>

@@ -4,6 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.css">
+<script src="https://cdn.ckeditor.com/4.14.0/standard/ckeditor.js"></script>
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.22/js/jquery.dataTables.js"></script>
 <style>
     h2 {
@@ -37,8 +38,9 @@
         <table class="table table-striped" id="myTable">
             <thead>
                 <tr>
-
+                    <th scope="col">Danh mục</th>
                     <th scope="col">Tiêu đề</th>
+                    <th scope="col">Hình ảnh</th>
                     <th scope="col">Nội dung</th>
                     <th scope="col">Thời gian</th>
                     <th scope="col">Người tạo</th>
@@ -55,13 +57,32 @@
                     {
                         var danhmuc = db.DANHMUCSKs.Where(x => x.IDDANHMUC == item.IDDANHMUC).FirstOrDefault();
                         var user = db.USERs.Where(x => x.IDUSER == item.IDUSER).FirstOrDefault();
+                        string noidung = item.MOTA ?? "";
+                        string tieude = item.TENEVENT ?? "";
+                        tieude = System.Text.RegularExpressions.Regex.Replace(tieude, "<.*?>", String.Empty);
+                        noidung = System.Text.RegularExpressions.Regex.Replace(noidung, "<.*?>", String.Empty);
+                        if(tieude.Length > 40)
+                        {
+                            tieude = tieude.Substring(0, 40) + "...";
+                        }
+                        if (noidung.Length > 50)
+                        {
+                            noidung = noidung.Substring(0, 50) + "...";
+                        }
                         <tr>
                             <td>@danhmuc.TENDANHMUC</td>
-                            <td>@item.TENEVENT</td>
+                            <td>@tieude</td>
+                            <td>
+                                @if (item.HINH == null)
+                                {
+                                    <img src="~/Hinh/no-img.jpg" style="width: 90px" alt="..." /> }
+                                else
+                                {
+                                    <img src="~/Hinh/@item.HINH" style="width: 80px" alt="..." />}
+                            </td>
+                            <td>@Html.Raw(noidung)</td>
                             <td>@item.THOIGIANEV</td>
                             <td>@user.FULLNAME</td>
-
-
                             <td>
                                 <div class="btn-group" role="group">
                                     <button type="button" class="btn btn-primary mr-10" onclick="EditSuKien(@item.IDEVENTS)"><i class="fa fa-edit"></i></button>
@@ -88,8 +109,8 @@
             <div class="modal-body">
                 <form>
                     <div class="form-group">
-                        <label class="col-form-label">Niên Khóa</label>
-                        <select class="form-control" name="TIEUDE">
+                        <label class="col-form-label">Danh mục</label>
+                        <select class="form-control" name="DANHMUC">
                             @using (DATHINHEntities db = new DATHINHEntities())
                             {
 
@@ -101,10 +122,32 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label class="col-form-label"></label>
-                        <input type="text" class="form-control" name="HOCKY">
+                        <label class="col-form-label">Tiêu đề</label>
+                        <input type="text" class="form-control" name="TIEUDE">
                     </div>
-
+                    @*<div class="form-group">
+                        <label class="col-form-label">Hình ảnh</label>
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="inputGroupFileAddon01">Upload</span>
+                            </div>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" id="hinh" onchange="readURL(this, 'blah1');" aria-describedby="inputGroupFileAddon01" name="HINH">
+                                <label class="custom-file-label" for="inputGroupFile01">Chọn hình ảnh</label>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="imges">
+                            <img id="blah1" width="250">
+                        </div>
+                    </div>*@
+                    <div class="form-group">
+                        <label class="col-form-label">Mô tả</label>
+                        <textarea class="form-control" rows="5" name="MOTA" id="MOTA"></textarea>
+                        <div class="invalid-feedback">
+                            Vui lòng nhập mô tả
+                        </div>
+                    </div>
 
                 </form>
             </div>
@@ -120,38 +163,45 @@
 
     $(document).ready(function () {
         $('#myTable').DataTable();
-
-
+        CKEDITOR.replace('MOTA');
     });
 
-    let idHK = 0;
+    let idEvent = 0;
 
     function addTinTuc() {
-        idHK = 0;
+        idEvent = 0;
 
+        $("[name='DANHMUC']").val('');
         $("[name='TIEUDE']").val('');
-        $("[name='TIEUDE']").val('');
+        CKEDITOR.instances['MOTA'].setData('');
         $("#modal").modal("show");
     }
 
     function SaveInfo() {
-        let nganh = $("[name='NGANH']").val();
-        let nienkhoa = $("[name='NIENKHOA']").val();
-        if (nganh == '' || nienkhoa == '') {
+        let danhmuc = $("[name='DANHMUC']").val();
+        let tieude = $("[name='TIEUDE']").val();
+        let noidung = CKEDITOR.instances['MOTA'].getData();
+        let user =  @(((USER)Session["Login"]).IDUSER)
+        console.log(noidung);
+        if (danhmuc == '' || tieude == '' || noidung =='') {
             $.notify("Vui lòng nhập thông tin !", "error");
             return;
         }
         $.ajax({
-            url: '/Ajax/PostNganh',
+            url: '/Ajax/EditSuKien',
             type: 'POST',
-            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+
             dataType: "json",
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
             data: {
-                NAMENGANH: nganh,
-                IDNIENKHOA: nienkhoa
+                TENEVENT: tieude,
+                IDDANHMUC: danhmuc,
+                MOTA: noidung,
+                HINH: "no-img.jpg",
+                THOIGIANEV: Date.now(),
+                IDUSER: user,
 
-
-            },
+        },
         }).done(function (result) {
             if (result.Success) {
                 alert('Cập nhật thành công');

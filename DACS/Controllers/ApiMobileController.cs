@@ -439,12 +439,71 @@ namespace DACS.Controllers
         public JsonResult<ApiMobileArray> InsertTKBSV(InsertTKBModel dataPost)
         {
             ApiMobileArray result = new ApiMobileArray();
-            var test = 1;
+            
             using (DATHINHEntities db = new DATHINHEntities())
             {
-                result.Success = true;
-                result.Message = "Thêm thành công!";
-                result.Data = null;
+                try
+                {
+                  
+                    LICHHOCTUAN LHNew = new LICHHOCTUAN();
+                    var Count = 1;
+                    LHNew.IDBUOIHOC1 = dataPost.LICHHOC.BUOIHOC1;
+                    LHNew.IDCAHOC1 = dataPost.LICHHOC.CAHOC1;
+                    if (dataPost.LICHHOC.BUOIHOC2 > 0)
+                    {
+                        LHNew.IDBUOIHOC2 = dataPost.LICHHOC.BUOIHOC2;
+                        LHNew.IDCAHOC2 = dataPost.LICHHOC.CAHOC2;
+                        Count++;
+                    }
+                    if (dataPost.LICHHOC.BUOIHOC3 > 0)
+                    {
+                        LHNew.IDBUOIHOC3 = dataPost.LICHHOC.BUOIHOC3;
+                        LHNew.IDCAHOC3 = dataPost.LICHHOC.CAHOC3;
+                        Count++;
+                    }
+                    LHNew.SOBUOIHOC = Count;
+
+                    db.LICHHOCTUANs.Add(LHNew);
+                    db.SaveChanges();
+                }
+                catch (Exception e)
+                {
+
+                    result.Success = false;
+                    result.Message = "Thêm thất bại";
+                    result.Data = null;
+                    return Json(result);
+                }
+
+                try
+                {
+                    TKB TKBNew = new TKB();
+                    TKBNew.IDCOSO = dataPost.IDCOSO;
+                    TKBNew.IDSTUDENT = dataPost.IDSTUDENT;
+                    TKBNew.IDTIETHOC = dataPost.IDTIETHOC;
+                    TKBNew.IDMONHOC = dataPost.IDMONHOC;
+                    TKBNew.THOIGIANBATDAU = dataPost.TIMESTART;
+                    TKBNew.THOIGIANKETTHUC = dataPost.TIMEEND;
+                    TKBNew.IDLICHHOC = db.LICHHOCTUANs.Max(x => x.IDLICHHOC);
+                    db.TKBs.Add(TKBNew);
+                    db.SaveChanges();
+                    result.Success = true;
+                    result.Message = "Thêm thành công";
+                    result.Data = null;
+                    return Json(result);
+                }
+                catch (Exception e)
+                {
+                    result.Success = false;
+                    result.Message = "Thêm thất bại";
+                    result.Data = null;
+                    return Json(result);
+
+                }
+
+
+
+
                 return Json(result);
             }
               
@@ -571,7 +630,50 @@ namespace DACS.Controllers
             }
 
         }
+        [HttpGet]
+        public JsonResult<List<NEWS>> News()
+        {
+            List<NEWS> result = new List<NEWS>();
+            using (DATHINHEntities db = new DATHINHEntities())
+            {
+                var lstnews = db.EVENTS.ToList();
+               
+                foreach (var news in lstnews)
+                {
+                    var danhmuc = db.DANHMUCSKs.Where(x => x.IDDANHMUC == news.DANHMUCSK.IDDANHMUC).FirstOrDefault();
+                    NEWS n = new NEWS();
+                    n.IDEVENT = news.IDEVENTS;
+                    n.TENEVENT = news.TENEVENT;
+                    n.MOTA = news.MOTA;
+                    n.TENDANHMUC = news.DANHMUCSK.TENDANHMUC;
+                    n.THOIGIANEV = (DateTime)news.THOIGIANEV;
+                    result.Add(n);
+                }
+            }
+            return Json(result);
+        }
+        [HttpPost]
+        public JsonResult<List<NEWS>> GetNews(int id)
+        {
 
+            List<NEWS> result = new List<NEWS>();
+            using (DATHINHEntities db = new DATHINHEntities())
+            {
+
+                var tintuc = db.EVENTS.Where(x => x.IDEVENTS == id).FirstOrDefault();
+                var nhanvien = db.USERs.Where(x => x.IDUSER == tintuc.IDUSER).FirstOrDefault();
+                var danhmuc = db.DANHMUCSKs.Where(x => x.IDDANHMUC == tintuc.DANHMUCSK.IDDANHMUC).FirstOrDefault();
+                NEWS n = new NEWS();
+                n.IDEVENT = tintuc.IDEVENTS;
+                n.FULLNAME = nhanvien.FULLNAME;
+                n.MOTA = tintuc.MOTA;
+                n.TENEVENT = tintuc.TENEVENT;
+                n.TENDANHMUC = tintuc.DANHMUCSK.TENDANHMUC;
+                n.THOIGIANEV = (DateTime)tintuc.THOIGIANEV;
+                result.Add(n);
+            }
+            return Json(result);
+        }
         [HttpGet]
         public JsonResult<ApiMobileArray> GetMonHocAllowDK(int IDSINHVIEN)
         {

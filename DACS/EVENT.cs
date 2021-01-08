@@ -20,6 +20,7 @@ namespace DACS
         public int IDUSER { get; set; }
         public int IDDANHMUC { get; set; }
         public string HINH { get; set; }
+        public string MOTA { get; set; }
     
         public virtual DANHMUCSK DANHMUCSK { get; set; }
         public virtual USER USER { get; set; }

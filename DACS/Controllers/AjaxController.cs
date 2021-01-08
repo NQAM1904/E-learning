@@ -31,6 +31,67 @@ namespace DACS.Controllers
                 };
             }
         }
+        [HttpGet]
+        public JsonResult GetTinTuc(int id)
+        {
+            //if (Session["AdminLogin"] is null) return null;
+
+            using (DATHINHEntities db = new DATHINHEntities())
+            {
+
+                var danhmuc = db.DANHMUCSKs.Where(x => x.IDDANHMUC == id).FirstOrDefault();
+                var sukien = db.EVENTS.Where(x => x.IDEVENTS == id).FirstOrDefault();
+                if (danhmuc is null) return null;
+                return new JsonResult()
+                {
+                    Data = new { DANHMUC = danhmuc.TENDANHMUC, MOTA = sukien.MOTA, TIEUDE = sukien.TENEVENT },
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                };
+            }
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public JsonResult EditSuKien(EVENT ev)
+        {
+            //if (Session["AdminLogin"] is null) return null;
+            ApiResult result = new ApiResult();
+            if (ev is null)
+            {
+                result.Message = "Vui lòng điền đủ thông tin";
+                return Json(result.Data);
+            }
+            using (DATHINHEntities db = new DATHINHEntities())
+            {
+                EVENT d = new EVENT();
+                if (ev.IDEVENTS > 0) d = db.EVENTS.Where(x => x.IDEVENTS ==  ev.IDEVENTS).FirstOrDefault();
+                if (d is null)
+                {
+                    result.Message = "Vui lòng thử lại";
+                    return Json(result);
+                }
+                var user = ((USER)Session["Login"]).IDUSER;
+                d.IDDANHMUC = ev.IDDANHMUC;
+                d.TENEVENT = ev.TENEVENT;
+                d.MOTA = ev.MOTA;
+                d.HINH = "no-img.jpg";
+                d.THOIGIANEV = DateTime.Now;
+                d.IDUSER = user;
+                if (ev.IDEVENTS == 0) db.EVENTS.Add(d);
+                try
+                {
+                    db.SaveChanges();
+                    result.Success = true;
+                }
+                catch (Exception ex)
+                {
+                    result.Message = ex.Message;
+                }
+            }
+
+            return Json(result);
+        }
+
         [HttpPost]
         public JsonResult EditDanhMuc(DANHMUCSK danhmuc)
         {

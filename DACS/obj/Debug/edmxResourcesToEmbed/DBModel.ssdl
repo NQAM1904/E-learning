@@ -50,6 +50,7 @@
     <Property Name="IDUSER" Type="int" Nullable="false" />
     <Property Name="IDDANHMUC" Type="int" Nullable="false" />
     <Property Name="HINH" Type="nvarchar" MaxLength="250" />
+    <Property Name="MOTA" Type="ntext" />
   </EntityType>
   <EntityType Name="HOCKY">
     <Key>

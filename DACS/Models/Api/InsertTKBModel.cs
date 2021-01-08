@@ -19,11 +19,11 @@ namespace DACS.Models.Api
     public class LICHHOCDATA
     {
         
-        public string BUOIHOC1 { get; set; }
-        public string CAHOC1 { get; set; }
-        public string BUOIHOC2 { get; set; }
-        public string CAHOC2 { get; set; }
-        public string BUOIHOC3 { get; set; }
-        public string CAHOC3 { get; set; }
+        public int BUOIHOC1 { get; set; }
+        public int CAHOC1 { get; set; }
+        public int BUOIHOC2 { get; set; }
+        public int CAHOC2 { get; set; }
+        public int BUOIHOC3 { get; set; }
+        public int CAHOC3 { get; set; }
     }
 }

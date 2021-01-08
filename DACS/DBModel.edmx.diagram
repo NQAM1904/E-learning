@@ -4,26 +4,26 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="354d9d42f07245999e295ae48522d811" Name="Diagram1">
-        <EntityTypeShape EntityType="DATHINHModel.BUOIHOC" Width="1.5" PointX="7.75" PointY="3.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="DATHINHModel.CAHOC" Width="1.5" PointX="5.75" PointY="11.375" IsExpanded="true" />
+      <Diagram DiagramId="1bf18a5ec8d04f1c8f2965e74d6c6c01" Name="Diagram1">
+        <EntityTypeShape EntityType="DATHINHModel.BUOIHOC" Width="1.5" PointX="7.75" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DATHINHModel.CAHOC" Width="1.5" PointX="5.75" PointY="11.5" IsExpanded="true" />
         <EntityTypeShape EntityType="DATHINHModel.COSO" Width="1.5" PointX="12.75" PointY="5.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="DATHINHModel.DANHMUCSK" Width="1.5" PointX="3" PointY="11.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="DATHINHModel.DIEM" Width="1.5" PointX="12" PointY="7.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DATHINHModel.DANHMUCSK" Width="1.5" PointX="3" PointY="11.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="DATHINHModel.DIEM" Width="1.5" PointX="12" PointY="7.875" IsExpanded="true" />
         <EntityTypeShape EntityType="DATHINHModel.EVENT" Width="1.5" PointX="5.25" PointY="0.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DATHINHModel.HOCKY" Width="1.5" PointX="7.5" PointY="8" IsExpanded="true" />
-        <EntityTypeShape EntityType="DATHINHModel.LICHHOCTUAN" Width="1.5" PointX="12.75" PointY="11.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DATHINHModel.MONHOC" Width="1.5" PointX="9.75" PointY="7.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DATHINHModel.NAMHOC" Width="1.5" PointX="5.25" PointY="8" IsExpanded="true" />
+        <EntityTypeShape EntityType="DATHINHModel.HOCKY" Width="1.5" PointX="7.5" PointY="8.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="DATHINHModel.LICHHOCTUAN" Width="1.5" PointX="12.75" PointY="11.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="DATHINHModel.MONHOC" Width="1.5" PointX="9.75" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="DATHINHModel.NAMHOC" Width="1.5" PointX="5.25" PointY="8.125" IsExpanded="true" />
         <EntityTypeShape EntityType="DATHINHModel.NGANH" Width="1.5" PointX="3" PointY="8" IsExpanded="true" />
-        <EntityTypeShape EntityType="DATHINHModel.NIENKHOA" Width="1.5" PointX="0.75" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DATHINHModel.NIENKHOA" Width="1.5" PointX="0.75" PointY="8.375" IsExpanded="true" />
         <EntityTypeShape EntityType="DATHINHModel.PERMISSION" Width="1.5" PointX="0.75" PointY="5.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="DATHINHModel.ROLE" Width="1.5" PointX="0.75" PointY="11.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="DATHINHModel.STUDENT" Width="1.5" PointX="5.25" PointY="4.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="DATHINHModel.sysdiagram" Width="1.5" PointX="7.75" PointY="11.375" IsExpanded="true" />
-        <EntityTypeShape EntityType="DATHINHModel.TIETHOC" Width="1.5" PointX="12.75" PointY="15.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="DATHINHModel.TKB" Width="1.5" PointX="15" PointY="7.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="DATHINHModel.USER" Width="1.5" PointX="3" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DATHINHModel.ROLE" Width="1.5" PointX="0.75" PointY="11.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="DATHINHModel.STUDENT" Width="1.5" PointX="5.25" PointY="4.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="DATHINHModel.sysdiagram" Width="1.5" PointX="7.75" PointY="11.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="DATHINHModel.TIETHOC" Width="1.5" PointX="12.75" PointY="15.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DATHINHModel.TKB" Width="1.5" PointX="15" PointY="7.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="DATHINHModel.USER" Width="1.5" PointX="3" PointY="3.375" IsExpanded="true" />
         <AssociationConnector Association="DATHINHModel.FK__TKB__IDCOSO__34C8D9D1" ManuallyRouted="false" />
         <AssociationConnector Association="DATHINHModel.FK__EVENTS__IDDANHMU__398D8EEE" ManuallyRouted="false" />
         <AssociationConnector Association="DATHINHModel.FK__DIEM__IDMONHOC__32E0915F" ManuallyRouted="false" />
