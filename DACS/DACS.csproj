@@ -205,10 +205,12 @@
     <Compile Include="Models\ApiMobile.cs" />
     <Compile Include="Models\ApiMobileArray.cs" />
     <Compile Include="Models\ApiResult.cs" />
+    <Compile Include="Models\Api\Diem.cs" />
     <Compile Include="Models\Api\GetDiem.cs" />
     <Compile Include="Models\Api\GetMonHoc.cs" />
     <Compile Include="Models\Api\GetMonHocApiModal.cs" />
     <Compile Include="Models\Api\GetSinhVienInfo.cs" />
+    <Compile Include="Models\Api\InsertDiemModel.cs" />
     <Compile Include="Models\Api\InsertTKBModel.cs" />
     <Compile Include="Models\Api\LichHocModel.cs" />
     <Compile Include="Models\Api\Login.cs" />
@@ -221,6 +223,7 @@
     <Compile Include="Models\Api\ObjProfile.cs" />
     <Compile Include="Models\Api\Register.cs" />
     <Compile Include="Models\Api\TKBModel.cs" />
+    <Compile Include="Models\Api\UpdateDiem.cs" />
     <Compile Include="Models\AuthorizationLogin.cs" />
     <Compile Include="Models\Extension.cs" />
     <Compile Include="Models\UserMasterRespository.cs" />
@@ -243,17 +246,8 @@
     <Compile Include="ROLE.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
-    <Compile Include="sp_helpdiagramdefinition_Result.cs">
-      <DependentUpon>DBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="sp_helpdiagrams_Result.cs">
-      <DependentUpon>DBModel.tt</DependentUpon>
-    </Compile>
     <Compile Include="Startup.cs" />
     <Compile Include="STUDENT.cs">
-      <DependentUpon>DBModel.tt</DependentUpon>
-    </Compile>
-    <Compile Include="sysdiagram.cs">
       <DependentUpon>DBModel.tt</DependentUpon>
     </Compile>
     <Compile Include="TIETHOC.cs">
