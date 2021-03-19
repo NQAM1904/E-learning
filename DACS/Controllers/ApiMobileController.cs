@@ -463,10 +463,10 @@ namespace DACS.Controllers
                 if (idMonTQ != 0)
                 {
                     var DiemTQ = db.DIEMs.Where(x => x.IDMONHOC == idMonTQ && x.IDSTUDENT == dataPost.IDSTUDENT).FirstOrDefault();
-                    if (DiemTQ is null || DiemTQ.DIEMTB < 5)
+                    if (DiemTQ is null || DiemTQ.DIEMTB < 4)
                     {
                         result.Success = false;
-                        result.Message = "Môn học trước chưa học or chưa đậu";
+                        result.Message = "Bạn chưa học môn tiên quyết nên không thể đăng ký!";
                         result.Data = null;
                         return Json(result);
                     }
@@ -560,11 +560,6 @@ namespace DACS.Controllers
                     }
                 }
 
-
-
-
-
-
                 return Json(result);
             }
 
@@ -576,36 +571,48 @@ namespace DACS.Controllers
             ApiMobileArray result = new ApiMobileArray();
             using (DATHINHEntities db = new DATHINHEntities())
             {
-                DateTime TimeEnd = (DateTime)db.TKBs.Where(x => x.IDSTUDENT == dataPost.IDSTUDENT && x.IDMONHOC == dataPost.IDMONHOC).FirstOrDefault().THOIGIANKETTHUC;
-                if (TimeEnd > DateTime.Now)
+                var TKB = db.TKBs.Where(x => x.IDSTUDENT == dataPost.IDSTUDENT && x.IDMONHOC == dataPost.IDMONHOC).FirstOrDefault();
+                if (TKB != null)
+                {
+                    DateTime TimeEnd = (DateTime) TKB.THOIGIANKETTHUC;
+                    if (TimeEnd >= DateTime.Now)
+                    {
+                        result.Success = false;
+                        result.Message = "Thời gian học chưa kết thúc hoặc sinh viên không đăng kí môn này";
+                        result.Data = null;
+                        return Json(result);
+                    }
+                    else
+                    {
+                        try
+                        {
+                            db.DIEMs.Add(new DIEM { IDSTUDENT = dataPost.IDSTUDENT, DIEMTB = dataPost.DIEMTB, STCDAT = dataPost.STCDAT, TONGDIEM = dataPost.TONGDIEM, IDMONHOC = dataPost.IDMONHOC });
+                            db.SaveChanges();
+                            result.Success = true;
+                            result.Message = "Thêm thành công!!!";
+                            result.Data = null;
+
+                            return Json(result);
+                        }
+                        catch
+                        {
+                            result.Success = false;
+                            result.Message = "Thêm thất bại! Yêu cầu xem lại!!!";
+                            result.Data = null;
+
+                            return Json(result);
+                        }
+                    }
+                }
+                else
                 {
                     result.Success = false;
-                    result.Message = "Thời gian học chưa kết thúc hoặc sinh viên không đăng kí môn này";
+                    result.Message = "Không có lịch học môn này trong hệ thống";
                     result.Data = null;
 
                     return Json(result);
                 }
-                else
-                {
-                    try
-                    {
-                        db.DIEMs.Add(new DIEM { IDSTUDENT = dataPost.IDSTUDENT, DIEMTB = dataPost.DIEMTB, STCDAT = dataPost.STCDAT, TONGDIEM = dataPost.TONGDIEM, IDMONHOC = dataPost.IDMONHOC });
-                        db.SaveChanges();
-                        result.Success = true;
-                        result.Message = "Thêm thành công!!!";
-                        result.Data = null;
-
-                        return Json(result);
-                    }
-                    catch
-                    {
-                        result.Success = false;
-                        result.Message = "Thêm thất bại! Yêu cầu xem lại!!!";
-                        result.Data = null;
-
-                        return Json(result);
-                    }
-                }
+                
             }
             return Json(result);
         }
