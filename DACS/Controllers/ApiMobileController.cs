@@ -36,6 +36,51 @@ namespace DACS.Controllers
         {
             return "ok";
         }
+
+        [HttpPost]
+        public JsonResult<ApiMobile> ChangePassword(ChangePassword user)
+        {
+            ApiMobile result = new ApiMobile();
+
+            if (String.IsNullOrEmpty(user.OLDPASSWORD) || String.IsNullOrEmpty(user.PASSWORD))
+            {
+                result.Message = "Vui lòng điền đầy đủ thông tin bên trên";
+                return Json(result);
+            }
+            using (DATHINHEntities db = new DATHINHEntities())
+            {
+                user.OLDPASSWORD = db.proc_CryptData(user.OLDPASSWORD).FirstOrDefault();
+
+                var userDB = db.USERs.Where(x => x.IDUSER == user.IDUSER).FirstOrDefault();
+                if (userDB is null)
+                {
+                    result.Message = "Vui lòng thử lại";
+                    return Json(result);
+                }
+                if (userDB.PASSWORD == user.OLDPASSWORD)
+                {
+                    userDB.PASSWORD = user.PASSWORD;
+                }
+                else
+                {
+                    result.Message = "Mật khẩu hiện tại không chính xác!";
+                    return Json(result);
+                }
+
+                try
+                {
+                    db.SaveChanges();
+                    result.Success = true;
+                    result.Message = "Đổi mật khẩu thành Công!";
+                }
+                catch (Exception ex)
+                {
+                    result.Message = ex.Message;
+                }
+            }
+            return Json(result);
+        }
+
         [HttpPost]
         public JsonResult<ApiMobile> Login(USER login)
         {
@@ -263,7 +308,6 @@ namespace DACS.Controllers
             return Json(result);
         }
 
-
         [HttpGet]
         public JsonResult<ApiMobile> GetProfile(int nKhoa, int idNganh, int idSTD)
         {
@@ -450,6 +494,121 @@ namespace DACS.Controllers
         }
 
 
+        //[HttpPost]
+        //public JsonResult<ApiMobileArray> InsertTKBSV(InsertTKBModel dataPost)
+        //{
+        //    ApiMobileArray result = new ApiMobileArray();
+
+        //    using (DATHINHEntities db = new DATHINHEntities())
+        //    {
+
+
+        //        var idMonTQ = db.MONHOCs.Where(x => x.IDMONHOC == dataPost.IDMONHOC).FirstOrDefault().IDMONTIENQUYET;
+        //        if (idMonTQ != 0)
+        //        {
+        //            var DiemTQ = db.DIEMs.Where(x => x.IDMONHOC == idMonTQ && x.IDSTUDENT == dataPost.IDSTUDENT).FirstOrDefault();
+        //            if (DiemTQ is null || DiemTQ.DIEMTB < 4)
+        //            {
+        //                result.Success = false;
+        //                result.Message = "Bạn chưa học môn tiên quyết nên không thể đăng ký!";
+        //                result.Data = null;
+        //                return Json(result);
+        //            }
+        //            else
+        //            {
+        //                try
+        //                {
+        //                    LICHHOCTUAN LHNew = new LICHHOCTUAN();
+        //                    var Count = 1;
+        //                    LHNew.IDBUOIHOC1 = dataPost.LICHHOC.BUOIHOC1;
+        //                    LHNew.IDCAHOC1 = dataPost.LICHHOC.CAHOC1;
+        //                    if (dataPost.LICHHOC.BUOIHOC2 > 0)
+        //                    {
+        //                        LHNew.IDBUOIHOC2 = dataPost.LICHHOC.BUOIHOC2;
+        //                        LHNew.IDCAHOC2 = dataPost.LICHHOC.CAHOC2;
+        //                        Count++;
+        //                    }
+        //                    if (dataPost.LICHHOC.BUOIHOC3 > 0)
+        //                    {
+        //                        LHNew.IDBUOIHOC3 = dataPost.LICHHOC.BUOIHOC3;
+        //                        LHNew.IDCAHOC3 = dataPost.LICHHOC.CAHOC3;
+        //                        Count++;
+        //                    }
+        //                    LHNew.SOBUOIHOC = Count;
+
+        //                    db.LICHHOCTUANs.Add(LHNew);
+        //                    db.SaveChanges();
+        //                }
+        //                catch (Exception e)
+        //                {
+
+        //                    result.Success = false;
+        //                    result.Message = "Thêm thất bại";
+        //                    result.Data = null;
+        //                    return Json(result);
+        //                }
+
+        //                try
+        //                {
+        //                    TKB TKBNew = new TKB();
+        //                    TKBNew.IDCOSO = dataPost.IDCOSO;
+        //                    TKBNew.IDSTUDENT = dataPost.IDSTUDENT;
+        //                    TKBNew.IDTIETHOC = dataPost.IDTIETHOC;
+        //                    TKBNew.IDMONHOC = dataPost.IDMONHOC;
+        //                    TKBNew.THOIGIANBATDAU = dataPost.TIMESTART;
+        //                    TKBNew.THOIGIANKETTHUC = dataPost.TIMEEND;
+        //                    TKBNew.IDLICHHOC = db.LICHHOCTUANs.Max(x => x.IDLICHHOC);
+        //                    db.TKBs.Add(TKBNew);
+        //                    db.SaveChanges();
+        //                    result.Success = true;
+        //                    result.Message = "Thêm thành công";
+        //                    result.Data = null;
+        //                    return Json(result);
+        //                }
+        //                catch (Exception e)
+        //                {
+        //                    result.Success = false;
+        //                    result.Message = "Thêm thất bại";
+        //                    result.Data = null;
+        //                    return Json(result);
+
+        //                }
+        //            }
+        //        }
+        //        else
+        //        {
+        //            try
+        //            {
+        //                TKB TKBNew = new TKB();
+        //                TKBNew.IDCOSO = dataPost.IDCOSO;
+        //                TKBNew.IDSTUDENT = dataPost.IDSTUDENT;
+        //                TKBNew.IDTIETHOC = dataPost.IDTIETHOC;
+        //                TKBNew.IDMONHOC = dataPost.IDMONHOC;
+        //                TKBNew.THOIGIANBATDAU = dataPost.TIMESTART;
+        //                TKBNew.THOIGIANKETTHUC = dataPost.TIMEEND;
+        //                TKBNew.IDLICHHOC = db.LICHHOCTUANs.Max(x => x.IDLICHHOC);
+        //                db.TKBs.Add(TKBNew);
+        //                db.SaveChanges();
+        //                result.Success = true;
+        //                result.Message = "Thêm thành công";
+        //                result.Data = null;
+        //                return Json(result);
+        //            }
+        //            catch (Exception e)
+        //            {
+        //                result.Success = false;
+        //                result.Message = "Thêm thất bại";
+        //                result.Data = null;
+        //                return Json(result);
+
+        //            }
+        //        }
+
+        //        return Json(result);
+        //    }
+
+        //}
+
         [HttpPost]
         public JsonResult<ApiMobileArray> InsertTKBSV(InsertTKBModel dataPost)
         {
@@ -457,83 +616,53 @@ namespace DACS.Controllers
 
             using (DATHINHEntities db = new DATHINHEntities())
             {
-
-
-                var idMonTQ = db.MONHOCs.Where(x => x.IDMONHOC == dataPost.IDMONHOC).FirstOrDefault().IDMONTIENQUYET;
-                if (idMonTQ != 0)
+                try
                 {
-                    var DiemTQ = db.DIEMs.Where(x => x.IDMONHOC == idMonTQ && x.IDSTUDENT == dataPost.IDSTUDENT).FirstOrDefault();
-                    if (DiemTQ is null || DiemTQ.DIEMTB < 4)
+
+                    LICHHOCTUAN LHNew = new LICHHOCTUAN();
+                    var Count = 1;
+                    LHNew.IDBUOIHOC1 = dataPost.LICHHOC.BUOIHOC1;
+                    LHNew.IDCAHOC1 = dataPost.LICHHOC.CAHOC1;
+                    if (dataPost.LICHHOC.BUOIHOC2 > 0)
                     {
-                        result.Success = false;
-                        result.Message = "Bạn chưa học môn tiên quyết nên không thể đăng ký!";
-                        result.Data = null;
-                        return Json(result);
+                        LHNew.IDBUOIHOC2 = dataPost.LICHHOC.BUOIHOC2;
+                        LHNew.IDCAHOC2 = dataPost.LICHHOC.CAHOC2;
+                        Count++;
+                    }
+                    if (dataPost.LICHHOC.BUOIHOC3 > 0)
+                    {
+                        LHNew.IDBUOIHOC3 = dataPost.LICHHOC.BUOIHOC3;
+                        LHNew.IDCAHOC3 = dataPost.LICHHOC.CAHOC3;
+                        Count++;
+                    }
+                    LHNew.SOBUOIHOC = Count;
+
+                    db.LICHHOCTUANs.Add(LHNew);
+                    db.SaveChanges();
+                }
+                catch (Exception e)
+                {
+
+                    result.Success = false;
+                    result.Message = "Thêm thất bại";
+                    result.Data = null;
+                    return Json(result);
+                }
+
+                try
+                {
+                    var idMonTQ = db.MONHOCs.Where(x => x.IDMONHOC == dataPost.IDMONHOC).FirstOrDefault().IDMONTIENQUYET;
+                    if (idMonTQ != 0)
+                    {
+                        var DiemTQ = db.DIEMs.Where(x => x.IDMONHOC == idMonTQ && x.IDSTUDENT == dataPost.IDSTUDENT).FirstOrDefault();
+                        if (DiemTQ is null || DiemTQ.DIEMTB < 4) {
+                            result.Success = false;
+                            result.Message = "Bạn chưa học môn tiên quyết nên không thể đăng ký!";
+                            result.Data = null;
+                            return Json(result);
+                        }
                     }
                     else
-                    {
-                        try
-                        {
-                            LICHHOCTUAN LHNew = new LICHHOCTUAN();
-                            var Count = 1;
-                            LHNew.IDBUOIHOC1 = dataPost.LICHHOC.BUOIHOC1;
-                            LHNew.IDCAHOC1 = dataPost.LICHHOC.CAHOC1;
-                            if (dataPost.LICHHOC.BUOIHOC2 > 0)
-                            {
-                                LHNew.IDBUOIHOC2 = dataPost.LICHHOC.BUOIHOC2;
-                                LHNew.IDCAHOC2 = dataPost.LICHHOC.CAHOC2;
-                                Count++;
-                            }
-                            if (dataPost.LICHHOC.BUOIHOC3 > 0)
-                            {
-                                LHNew.IDBUOIHOC3 = dataPost.LICHHOC.BUOIHOC3;
-                                LHNew.IDCAHOC3 = dataPost.LICHHOC.CAHOC3;
-                                Count++;
-                            }
-                            LHNew.SOBUOIHOC = Count;
-
-                            db.LICHHOCTUANs.Add(LHNew);
-                            db.SaveChanges();
-                        }
-                        catch (Exception e)
-                        {
-
-                            result.Success = false;
-                            result.Message = "Thêm thất bại";
-                            result.Data = null;
-                            return Json(result);
-                        }
-
-                        try
-                        {
-                            TKB TKBNew = new TKB();
-                            TKBNew.IDCOSO = dataPost.IDCOSO;
-                            TKBNew.IDSTUDENT = dataPost.IDSTUDENT;
-                            TKBNew.IDTIETHOC = dataPost.IDTIETHOC;
-                            TKBNew.IDMONHOC = dataPost.IDMONHOC;
-                            TKBNew.THOIGIANBATDAU = dataPost.TIMESTART;
-                            TKBNew.THOIGIANKETTHUC = dataPost.TIMEEND;
-                            TKBNew.IDLICHHOC = db.LICHHOCTUANs.Max(x => x.IDLICHHOC);
-                            db.TKBs.Add(TKBNew);
-                            db.SaveChanges();
-                            result.Success = true;
-                            result.Message = "Thêm thành công";
-                            result.Data = null;
-                            return Json(result);
-                        }
-                        catch (Exception e)
-                        {
-                            result.Success = false;
-                            result.Message = "Thêm thất bại";
-                            result.Data = null;
-                            return Json(result);
-
-                        }
-                    }
-                }
-                else
-                {
-                    try
                     {
                         TKB TKBNew = new TKB();
                         TKBNew.IDCOSO = dataPost.IDCOSO;
@@ -550,21 +679,19 @@ namespace DACS.Controllers
                         result.Data = null;
                         return Json(result);
                     }
-                    catch (Exception e)
-                    {
-                        result.Success = false;
-                        result.Message = "Thêm thất bại";
-                        result.Data = null;
-                        return Json(result);
-
-                    }
+                }
+                catch (Exception e)
+                {
+                    result.Success = false;
+                    result.Message = "Thêm thất bại";
+                    result.Data = null;
+                    return Json(result);
                 }
 
                 return Json(result);
             }
 
         }
-
         [HttpPost]
         public JsonResult<ApiMobileArray> InsertDiem(UpdateDiem dataPost)
         {
@@ -574,7 +701,7 @@ namespace DACS.Controllers
                 var TKB = db.TKBs.Where(x => x.IDSTUDENT == dataPost.IDSTUDENT && x.IDMONHOC == dataPost.IDMONHOC).FirstOrDefault();
                 if (TKB != null)
                 {
-                    DateTime TimeEnd = (DateTime) TKB.THOIGIANKETTHUC;
+                    DateTime TimeEnd = (DateTime)TKB.THOIGIANKETTHUC;
                     if (TimeEnd >= DateTime.Now)
                     {
                         result.Success = false;
@@ -612,7 +739,7 @@ namespace DACS.Controllers
 
                     return Json(result);
                 }
-                
+
             }
             return Json(result);
         }

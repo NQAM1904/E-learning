@@ -205,6 +205,7 @@
     <Compile Include="Models\ApiMobile.cs" />
     <Compile Include="Models\ApiMobileArray.cs" />
     <Compile Include="Models\ApiResult.cs" />
+    <Compile Include="Models\Api\ChangePassword.cs" />
     <Compile Include="Models\Api\Diem.cs" />
     <Compile Include="Models\Api\GetDiem.cs" />
     <Compile Include="Models\Api\GetMonHoc.cs" />
